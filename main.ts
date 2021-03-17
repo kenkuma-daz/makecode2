@@ -19,7 +19,7 @@ let mySprite = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(mySprite, 100, 0)
 scene.cameraFollowSprite(mySprite)
-tiles.placeOnTile(mySprite, tiles.getTileLocation(4, 9))
+tiles.placeOnTile(mySprite, tiles.getTileLocation(2, 8))
 game.onUpdate(function () {
     mySprite.vy = Math.min(mySprite.vy + 8, 200)
     if (mySprite.isHittingTile(CollisionDirection.Bottom) && controller.A.isPressed()) {
