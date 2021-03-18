@@ -3,18 +3,23 @@ function キャラクタ更新 (sprite: Sprite) {
     キャラクタ移動(sprite)
 }
 function キャラクタ移動 (sprite: Sprite) {
-    if (冒険者の向き == "左" && sprite.isHittingTile(CollisionDirection.Left)) {
-        sprite.vy = 0
-        return
-    } else if (冒険者の向き == "右" && sprite.isHittingTile(CollisionDirection.Right)) {
-        sprite.vy = 0
-        return
-    }
     sprite.vy = Math.min(sprite.vy + 8, 200)
-    if (sprite.isHittingTile(CollisionDirection.Bottom) && controller.up.isPressed()) {
-        sprite.vy = -200
-    } else if (!(controller.up.isPressed())) {
-        sprite.vy = 200
+    if (sprite.isHittingTile(CollisionDirection.Bottom)) {
+        if (controller.up.isPressed()) {
+            sprite.vy = -200
+        }
+    } else {
+        if (sprite.isHittingTile(CollisionDirection.Left) && 冒険者の向き == "左" || sprite.isHittingTile(CollisionDirection.Right) && 冒険者の向き == "右") {
+            if (controller.up.isPressed()) {
+                sprite.vy = -100
+            } else if (controller.down.isPressed()) {
+                sprite.vy = 100
+            } else {
+                sprite.vy = 0
+            }
+        } else if (!(controller.up.isPressed())) {
+            sprite.vy = 200
+        }
     }
 }
 function キャラクタアニメーション (sprite: Sprite) {
