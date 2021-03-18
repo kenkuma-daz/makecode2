@@ -1,26 +1,57 @@
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (controller.up.isPressed()) {
+        壁破壊(冒険者, 0, -1)
+    } else if (controller.down.isPressed()) {
+        壁破壊(冒険者, 0, 1)
+    } else if (冒険者の向き == "左") {
+        壁破壊(冒険者, -1, 0)
+    } else if (冒険者の向き == "右") {
+        壁破壊(冒険者, 1, 0)
+    }
+})
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (controller.up.isPressed()) {
+        壁生成(冒険者, 0, -1)
+    } else if (controller.down.isPressed()) {
+        壁生成(冒険者, 0, 1)
+    } else if (冒険者の向き == "左") {
+        壁生成(冒険者, -1, 0)
+    } else if (冒険者の向き == "右") {
+        壁生成(冒険者, 1, 0)
+    }
+})
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
-    キャラクタ移動(sprite)
+    sprite.vy = キャラクタ移動(sprite)
+}
+function 壁破壊 (sprite: Sprite, x: number, y: number) {
+    tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), assets.tile`transparency16`)
+    tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), false)
+}
+function 壁生成 (sprite: Sprite, x: number, y: number) {
+    tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), sprites.castle.tilePath5)
+    tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), true)
 }
 function キャラクタ移動 (sprite: Sprite) {
-    sprite.vy = Math.min(sprite.vy + 8, 200)
-    if (sprite.isHittingTile(CollisionDirection.Bottom)) {
+    if (キャラクタ壁接触(sprite, "下")) {
         if (controller.up.isPressed()) {
-            sprite.vy = -200
+            return -200
         }
     } else {
-        if (sprite.isHittingTile(CollisionDirection.Left) && 冒険者の向き == "左" || sprite.isHittingTile(CollisionDirection.Right) && 冒険者の向き == "右") {
+        if (キャラクタ壁接触(sprite, "左") || キャラクタ壁接触(sprite, "右")) {
             if (controller.up.isPressed()) {
-                sprite.vy = -100
+                return -100
             } else if (controller.down.isPressed()) {
-                sprite.vy = 100
+                return 100
             } else {
-                sprite.vy = 0
+                return 0
             }
         } else if (!(controller.up.isPressed())) {
             sprite.vy = 200
+            return 200
         }
     }
+    return Math.min(sprite.vy + 8, 200)
 }
 function キャラクタアニメーション (sprite: Sprite) {
     if (!(controller.left.isPressed()) && !(controller.right.isPressed())) {
@@ -184,6 +215,18 @@ function キャラクタアニメーション (sprite: Sprite) {
     } else {
     	
     }
+}
+function キャラクタ壁接触 (sprite: Sprite, 向き: string) {
+    if (sprite.isHittingTile(CollisionDirection.Left) && 向き == 冒険者の向き) {
+    	
+    } else if (sprite.isHittingTile(CollisionDirection.Right) && 向き == 冒険者の向き) {
+    	
+    } else if (sprite.isHittingTile(CollisionDirection.Bottom) && 向き == "下") {
+    	
+    } else {
+        return false
+    }
+    return true
 }
 let 冒険者の向き = ""
 let 冒険者: Sprite = null
