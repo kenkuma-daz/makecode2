@@ -15,15 +15,15 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         } else if (冒険者の向き == "右") {
             壁破壊(冒険者, 1, 0)
         }
-    } else if (道具リスト[道具インデックス].image.equals(assets.image`レンガ`)) {
+    } else if (道具リスト[道具インデックス].image.equals(assets.tile`壁タイル`)) {
         if (controller.up.isPressed()) {
-            壁生成(冒険者, 0, -1, assets.image`レンガ`)
+            壁生成(冒険者, 0, -1, assets.tile`壁タイル`)
         } else if (controller.down.isPressed()) {
-            壁生成(冒険者, 0, 1, assets.image`レンガ`)
+            壁生成(冒険者, 0, 1, assets.tile`壁タイル`)
         } else if (冒険者の向き == "左") {
-            壁生成(冒険者, -1, 0, assets.image`レンガ`)
+            壁生成(冒険者, -1, 0, assets.tile`壁タイル`)
         } else if (冒険者の向き == "右") {
-            壁生成(冒険者, 1, 0, assets.image`レンガ`)
+            壁生成(冒険者, 1, 0, assets.tile`壁タイル`)
         }
     } else {
     	
@@ -36,7 +36,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function 道具箱生成 () {
     道具リスト = []
-    for (let 道具 of [assets.image`ツルハシ`, assets.image`レンガ`, assets.image`ハシゴ`, sprites.food.smallTaco]) {
+    for (let 道具 of [assets.image`ツルハシ`, assets.tile`壁タイル`, sprites.food.smallTaco]) {
         道具リスト.push(sprites.create(道具, SpriteKind.Items))
     }
     道具インデックス = 0
@@ -110,7 +110,7 @@ function キャラクタ移動 (sprite: Sprite) {
             return -200
         }
     } else {
-        if (キャラクタ壁接触(sprite, "左") || キャラクタ壁接触(sprite, "右")) {
+        if (sprite.tileKindAt(TileDirection.Center, assets.tile`壁タイル`)) {
             if (controller.up.isPressed()) {
                 return -100
             } else if (controller.down.isPressed()) {

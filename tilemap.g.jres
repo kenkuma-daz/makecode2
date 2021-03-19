@@ -5,7 +5,7 @@
         "tilemapTile": true
     },
     "tile1": {
-        "data": "hwQQABAAAADu7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7g==",
+        "data": "hwQQABAAAAAvIi8i7+7v7i8iLyLv7u/uLyIvIu/u7+4vIi8i7+7v7i8iLyLv7u/u//8vIv//7+7v7i8i7+7v7u/uLyLv7u/u7+4vIu/u7+7v7i8i7+7v7u/u///v7v//7+7v7u/u7+7v7u/u7+7v7u/u7+7v7u/u7+7v7u/u7+7v7u/u7+7v7g==",
         "mimeType": "image/x-mkcd-f4",
         "tilemapTile": true,
         "displayName": "壁タイル"
