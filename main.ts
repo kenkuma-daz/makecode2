@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const Items = SpriteKind.create()
+}
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.up.isPressed()) {
         壁破壊(冒険者, 0, -1)
@@ -20,6 +23,30 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         壁生成(冒険者, 1, 0)
     }
 })
+function 道具箱生成 () {
+    道具リスト = []
+    for (let 道具 of [sprites.food.smallBurger, sprites.food.smallApple, sprites.food.smallTaco, 0]) {
+        道具リスト.push(sprites.create(道具, SpriteKind.Items))
+    }
+    道具箱 = sprites.create(img`
+        55555555555555555555555555555555555555555555555555555555555555555555555555555555
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        5...............5...............5...............5...............5..............5
+        55555555555555555555555555555555555555555555555555555555555555555555555555555555
+        `, SpriteKind.Items)
+}
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
     sprite.vy = キャラクタ移動(sprite)
@@ -31,6 +58,12 @@ function 壁破壊 (sprite: Sprite, x: number, y: number) {
 function 壁生成 (sprite: Sprite, x: number, y: number) {
     tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), sprites.castle.tilePath5)
     tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), true)
+}
+function 道具箱更新 (sprite: Sprite) {
+    道具箱.setPosition(scene.cameraProperty(CameraProperty.X), scene.cameraProperty(CameraProperty.Y) + 48)
+    for (let 道具 of 道具リスト) {
+        道具.setPosition(scene.cameraProperty(CameraProperty.X) + 道具リスト.indexOf(道具) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 48)
+    }
 }
 function キャラクタ移動 (sprite: Sprite) {
     if (キャラクタ壁接触(sprite, "下")) {
@@ -228,8 +261,11 @@ function キャラクタ壁接触 (sprite: Sprite, 向き: string) {
     }
     return true
 }
+let 道具箱: Sprite = null
+let 道具リスト: Sprite[] = []
 let 冒険者の向き = ""
 let 冒険者: Sprite = null
+道具箱生成()
 tiles.setTilemap(tilemap`level1`)
 冒険者 = sprites.create(img`
     . . . . . . f f f f . . . . . . 
@@ -254,4 +290,5 @@ scene.cameraFollowSprite(冒険者)
 tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
 game.onUpdate(function () {
     キャラクタ更新(冒険者)
+    道具箱更新(冒険者)
 })
