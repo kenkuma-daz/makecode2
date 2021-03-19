@@ -25,7 +25,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function 道具箱生成 () {
     道具リスト = []
-    for (let 道具 of [sprites.food.smallBurger, sprites.food.smallApple, sprites.food.smallTaco, 0]) {
+    for (let 道具 of [assets.image`ツルハシ`, assets.image`レンガ`, assets.image`ハシゴ`, sprites.food.smallTaco]) {
         道具リスト.push(sprites.create(道具, SpriteKind.Items))
     }
     道具箱 = sprites.create(img`
