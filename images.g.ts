@@ -39,63 +39,6 @@ namespace myImages {
 5...............5...............5...............5...............5..............5
 55555555555555555555555555555555555555555555555555555555555555555555555555555555
 `;
-            case "image1":
-            case "ツルハシ":return img`
-. . . 1 9 9 9 f f f f . . . . . 
-. 1 1 9 f f f f f f f . . . . . 
-. 1 9 9 f f f . . . . . . . . . 
-1 9 9 f f . . . . . . . . . . . 
-1 9 f f f c . . . . . . . . . . 
-1 9 f . e c c . . . . . . . . . 
-1 9 f . . e c c . . . . . . . . 
-1 9 f . . . e c c . . . . . . . 
-9 f . . . . . e c c . . . . . . 
-9 f . . . . . . e c c . . . . . 
-f f . . . . . . . e c c . . . . 
-. . . . . . . . . . e c c . . . 
-. . . . . . . . . . . e c c . . 
-. . . . . . . . . . . . e c c . 
-. . . . . . . . . . . . . e c c 
-. . . . . . . . . . . . . . e e 
-`;
-            case "image2":
-            case "レンガ":return img`
-f f f f f f f f f f f f f f f f 
-e e e e f e e e e e e e e e e e 
-e e e e f e e e e e e e e e e e 
-e e e e f e e e e e e e e e e e 
-f f f f f f f f f f f f f f f f 
-e e e e e e e e e e f e e e e e 
-e e e e e e e e e e f e e e e e 
-e e e e e e e e e e f e e e e e 
-f f f f f f f f f f f f f f f f 
-e e e e f e e e e e e e e e e e 
-e e e e f e e e e e e e e e e e 
-e e e e f e e e e e e e e e e e 
-f f f f f f f f f f f f f f f f 
-e e e e e e e e e e f e e e e e 
-e e e e e e e e e e f e e e e e 
-e e e e e e e e e e f e e e e e 
-`;
-            case "image3":
-            case "ハシゴ":return img`
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 4 4 4 4 4 4 4 4 4 4 4 4 5 . 
-. 4 e e e e e e e e e e e 4 5 . 
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 4 4 4 4 4 4 4 4 4 4 4 4 5 . 
-. 4 e e e e e e e e e e e 4 5 . 
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 4 4 4 4 4 4 4 4 4 4 4 4 5 . 
-. 4 e e e e e e e e e e e 4 5 . 
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 5 . . . . . . . . . . 4 5 . 
-. 4 4 4 4 4 4 4 4 4 4 4 4 4 5 . 
-`;
             case "image4":return img`
 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
@@ -113,6 +56,63 @@ e e e e e e e e e e f e e e e e
 3 3 . . . . . . . . . . . . 3 3 
 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+`;
+            case "image1":
+            case "ハンマー":return img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . c c c . . . . . . 
+. . . . . . c c c c c . . . . . 
+. . . . . c c c c c c . . . . . 
+. . . . c c c c c c . . . . . . 
+. . . c c c c c c . . . . . . . 
+. . c c c c c c . . . . . . . . 
+. c c c c c c e e . . . . . . . 
+. c c c c c . c e e . . . . . . 
+. c c c c . . . c e e . . . . . 
+. . c c . . . . . c e e . . . . 
+. . . . . . . . . . c e e . . . 
+. . . . . . . . . . . c e e . . 
+. . . . . . . . . . . . c e e . 
+. . . . . . . . . . . . . e e . 
+. . . . . . . . . . . . . . . . 
+`;
+            case "image2":
+            case "ハンドガン":return img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . f f . . . . . . f f c f . . 
+. . f f f f f f f f f f f f . . 
+. . f c c c c c f c c c c f . . 
+. . f f f f f f f c c c c f . . 
+. . f c c c c c f c c c c f . . 
+. . f f f f f f f f e e e e . . 
+. . . . . . . f . f e c c e . . 
+. . . . . . . f . . e e e e . . 
+. . . . . . . f f f e c c e . . 
+. . . . . . . . . . e e e e . . 
+. . . . . . . . . . e c c e . . 
+. . . . . . . . . . e e e e . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`;
+            case "image5":
+            case "弾丸":return img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. f f f f . f f f f . f f f f . 
+. f c c f . f c c f . f c c f . 
+. f c c f . f c c f . f c c f . 
+. f f f f . f f f f . f f f f . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
 `;
         }
         return null;
