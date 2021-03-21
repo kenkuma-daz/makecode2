@@ -1,7 +1,9 @@
-// Auto-generated code. Do not edit.
+// 自動生成されたコードです。変更しないでください。
 namespace myTiles {
     //% fixedInstance jres blockIdentity=images._tile
     export const transparency16 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile3 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile1 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
@@ -35,6 +37,8 @@ namespace myTiles {
     helpers._registerFactory("tile", function(name: string) {
         switch(helpers.stringTrim(name)) {
             case "transparency16":return transparency16;
+            case "myTile":
+            case "tile3":return tile3;
             case "壁タイル":
             case "tile1":return tile1;
             case "ハシゴタイル":
@@ -44,4 +48,4 @@ namespace myTiles {
     })
 
 }
-// Auto-generated code. Do not edit.
+// 自動生成されたコードです。変更しないでください。
