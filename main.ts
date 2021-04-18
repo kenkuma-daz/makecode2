@@ -6,36 +6,26 @@ function タイル生成 (sprite: Sprite, x: number, y: number, tile: Image) {
     tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), false)
 }
 function モンスター作成 () {
-    for (let index = 0; index < 4; index++) {
-        モンスター = sprites.create(img`
-            ........................
-            ........................
-            ........................
-            ........................
-            ..........ffff..........
-            ........ff1111ff........
-            .......fb111111bf.......
-            .......f11111111f.......
-            ......fd11111111df......
-            ......fd11111111df......
-            ......fddd1111dddf......
-            ......fbdbfddfbdbf......
-            ......fcdcf11fcdcf......
-            .......fb111111bf.......
-            ......fffcdb1bdffff.....
-            ....fc111cbfbfc111cf....
-            ....f1b1b1ffff1b1b1f....
-            ....fbfbffffffbfbfbf....
-            .........ffffff.........
-            ...........fff..........
-            ........................
-            ........................
-            ........................
-            ........................
-            `, SpriteKind.Enemy)
-        モンスター.setPosition(randint(0, 1600), randint(0, 10))
-        モンスター.follow(冒険者, 100)
-    }
+    モンスター = sprites.create(img`
+        . . f f f . . . . . . . . f f f 
+        . f f c c . . . . . . f c b b c 
+        f f c c . . . . . . f c b b c . 
+        f c f c . . . . . . f b c c c . 
+        f f f c c . c c . f c b b c c . 
+        f f c 3 c c 3 c c f b c b b c . 
+        f f b 3 b c 3 b c f b c c b c . 
+        . c b b b b b b c b b c c c . . 
+        . c 1 b b b 1 b b c c c c . . . 
+        c b b b b b b b b b c c . . . . 
+        c b c b b b c b b b b f . . . . 
+        f b 1 f f f 1 b b b b f c . . . 
+        f b b b b b b b b b b f c c . . 
+        . f b b b b b b b b c f . . . . 
+        . . f b b b b b b c f . . . . . 
+        . . . f f f f f f f . . . . . . 
+        `, SpriteKind.Enemy)
+    モンスター.setPosition(randint(0, 1600), randint(0, 10))
+    モンスター.follow(冒険者, 20)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(冒険者, 0, 0)
@@ -146,8 +136,8 @@ controller.B.onEvent(ControllerButtonEvent.Released, function () {
 function 道具箱更新 (sprite: Sprite) {
     道具箱.setPosition(scene.cameraProperty(CameraProperty.X), scene.cameraProperty(CameraProperty.Y) + 48)
     道具選択枠.setPosition(scene.cameraProperty(CameraProperty.X) + 道具インデックス * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 48)
-    for (let 道具 of 道具リスト) {
-        道具.setPosition(scene.cameraProperty(CameraProperty.X) + 道具リスト.indexOf(道具) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 48)
+    for (let 道具2 of 道具リスト) {
+        道具2.setPosition(scene.cameraProperty(CameraProperty.X) + 道具リスト.indexOf(道具2) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 48)
     }
 }
 function キャラクタ移動 (sprite: Sprite) {
@@ -350,6 +340,14 @@ function キャラクタ壁接触 (sprite: Sprite, 向き: string) {
     }
     return true
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy(effects.fire, 500)
+    モンスター作成()
+    info.changeScoreBy(1)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+})
 let 道具選択枠: Sprite = null
 let 道具箱: Sprite = null
 let 弾丸: Sprite = null
@@ -360,6 +358,7 @@ let モンスター: Sprite = null
 let 冒険者: Sprite = null
 道具箱生成()
 tiles.setTilemap(tilemap`level1`)
+scene.setBackgroundColor(9)
 冒険者 = sprites.create(img`
     . . . . . . f f f f . . . . . . 
     . . . . f f f 2 2 f f f . . . . 
@@ -378,10 +377,13 @@ tiles.setTilemap(tilemap`level1`)
     . . . . . f f f f f f . . . . . 
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
+info.setLife(8)
 controller.moveSprite(冒険者, 100, 0)
 scene.cameraFollowSprite(冒険者)
 tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
-モンスター作成()
+for (let index = 0; index < 3; index++) {
+    モンスター作成()
+}
 game.onUpdate(function () {
     キャラクタ更新(冒険者)
     道具箱更新(冒険者)
