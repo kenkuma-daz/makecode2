@@ -116,6 +116,10 @@ function 道具箱生成 () {
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
         `, SpriteKind.Items)
+    ItemBox2 = Items.createEmptyItemBox()
+    for (let 道具 of [assets.image`ハンマー`, assets.tile`壁タイル`, assets.tile`ハシゴタイル`, assets.image`ハンドガン`]) {
+    	
+    }
 }
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
@@ -348,6 +352,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
 })
+let ItemBox2: ItemBox = null
 let 道具選択枠: Sprite = null
 let 道具箱: Sprite = null
 let 弾丸: Sprite = null
@@ -384,7 +389,6 @@ tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
 for (let index = 0; index < 3; index++) {
     モンスター作成()
 }
-let ItemBox2 = Items.createEmptyItemBox()
 game.onUpdate(function () {
     キャラクタ更新(冒険者)
     道具箱更新(冒険者)

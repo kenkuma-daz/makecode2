@@ -157,14 +157,14 @@ class ItemBox {
 
     }
 
-    /**
-     * Use "$this" to define a variable block that
-     * references the "this" pointer.
-     */
-    //% block="ItemBox $this(ItemBox) add $item"    
-    addItem(item: Item) {
-        this._items.push(item);
-    }
+    // /**
+    //  * Use "$this" to define a variable block that
+    //  * references the "this" pointer.
+    //  */
+    // //% block="ItemBox $this(ItemBox) add $item"    
+    // addItem(item: Item) {
+    //     this._items.push(item);
+    // }
 
     /**
      * Use "$this" to define a variable block that
@@ -173,9 +173,10 @@ class ItemBox {
      * @param sprite
      */
     //% block="ItemBox $this(ItemBox) add $name %sprite "    
-    add(name:string, sprite: Sprite) {
-        let item = new Item(name, sprite);
-        this._items.push(item);
+    add(name:string, obj: Object) {
+    // add(name:string, image: Image) {
+        // let item = new Item(name, sprite);
+        // this._items.push(item);
     }
 
     /**
