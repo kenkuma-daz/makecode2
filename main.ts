@@ -384,7 +384,9 @@ tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
 for (let index = 0; index < 3; index++) {
     モンスター作成()
 }
+let ItemBox2 = Items.createEmptyItemBox()
 game.onUpdate(function () {
     キャラクタ更新(冒険者)
     道具箱更新(冒険者)
+    ItemBox2.update()
 })
