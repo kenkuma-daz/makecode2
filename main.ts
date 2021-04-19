@@ -71,6 +71,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
+        ItemBox2.prev()
         道具インデックス = (道具インデックス + (道具リスト.length - 1)) % 道具リスト.length
     }
 })
@@ -127,6 +128,7 @@ function キャラクタ更新 (sprite: Sprite) {
 }
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
+        ItemBox2.next()
         道具インデックス = (道具インデックス + (道具リスト.length + 1)) % 道具リスト.length
     }
 })
@@ -352,9 +354,9 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
 })
-let ItemBox2: ItemBox = null
 let 道具選択枠: Sprite = null
 let 道具箱: Sprite = null
+let ItemBox2: ItemBox = null
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
 let 道具インデックス = 0

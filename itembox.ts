@@ -1,20 +1,4 @@
-// /**
-//  * Functions that create objects should store them in variables.
-//  */
-// //% color="#AA278D"
-// namespace language {
-//     //%
-//     export class Robot { }
 
-//     /**
-//      * Creates a robot and automtically set it to a variable
-//      */
-//     //% block="create robot"
-//     //% blockSetVariable=robot
-//     export function createRobot(): Robot {
-//         return undefined;
-//     }
-// }
 
 
 // namespace SpriteKind {
@@ -34,62 +18,7 @@ class Item {
         this._name = name;
         this._sprite = sprite;
     }
-
-    /**
-     * Set a name to the Item
-     * @param name
-     */
-    //% block="turn %Items(ItemBox) %active"
-    setName(name: string) {
-        this._name = name;
-    }
-    
 }
-
-
-// function 道具箱生成 () {
-//     道具リスト = []
-//     for (let 道具 of [assets.image`ハンマー`, assets.tile`壁タイル`, assets.tile`ハシゴタイル`, assets.image`ハンドガン`]) {
-//         道具リスト.push(sprites.create(道具, SpriteKind.Items))
-//     }
-//     道具インデックス = 0
-//     道具箱 = sprites.create(img`
-//         55555555555555555555555555555555555555555555555555555555555555555555555555555555
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         55555555555555555555555555555555555555555555555555555555555555555555555555555555
-//         `, SpriteKind.Items)
-//     道具選択枠 = sprites.create(img`
-//         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-//         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-//         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-//         `, SpriteKind.Items)
-// }
 
 function createItemFrame(): Sprite {
     return sprites.create(img`
@@ -147,25 +76,14 @@ class ItemBox {
     constructor() {
         this._selected = 0;
         this._frame = createItemFrame();
+        this._frame.z = 0;
         this._focus = createItemFocus();
+        this._focus.z = 1;
 
         this._items = [];
-        // this._items.push(new Item("ハンマー", sprites.create(assets.image`ハンマー`, SpriteKind.Items)));
-        // this._items.push(new Item("壁タイル", sprites.create(assets.image`壁タイル`, SpriteKind.Items)));
-        // this._items.push(new Item("ハシゴタイル", sprites.create(assets.image`ハシゴタイル`, SpriteKind.Items)));
-        // this._items.push(new Item("ハンドガン", sprites.create(assets.image`ハンドガン`, SpriteKind.Items)));
-
     }
 
-    // /**
-    //  * Use "$this" to define a variable block that
-    //  * references the "this" pointer.
-    //  */
-    // //% block="ItemBox $this(ItemBox) add $item"    
-    // addItem(item: Item) {
-    //     this._items.push(item);
-    // }
-
+    
     /**
      * Use "$this" to define a variable block that
      * references the "this" pointer.
@@ -178,6 +96,26 @@ class ItemBox {
         this._items.push(item);
     }
 
+    //% block="ItemBox $this(ItemBox) selected $name "    
+    isSelected(name:string) : boolean {
+        let item = this._items[this._selected];
+        return item._name.compare(name) == 0;
+    }
+    
+    //% block="next $this(ItemBox)"    
+    next() {
+        this._selected += 1;
+        if( this._selected >= this._items.length )
+            this._selected = 0;
+    }
+
+    //% block="prev $this(ItemBox)"    
+    prev() {
+        this._selected -= 1;
+        if( this._selected < 0)
+            this._selected = this._items.length - 1;
+    }
+    
     /**
      * Use "$this" to define a variable block that
      * references the "this" pointer.
