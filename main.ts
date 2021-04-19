@@ -118,7 +118,7 @@ function 道具箱生成 () {
         `, SpriteKind.Items)
     ItemBox2 = Items.createEmptyItemBox()
     for (let 道具 of [assets.image`ハンマー`, assets.tile`壁タイル`, assets.tile`ハシゴタイル`, assets.image`ハンドガン`]) {
-    	
+        ItemBox2.add("", sprites.create(道具, SpriteKind.Items))
     }
 }
 function キャラクタ更新 (sprite: Sprite) {

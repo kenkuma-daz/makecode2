@@ -172,11 +172,10 @@ class ItemBox {
      * @param name
      * @param sprite
      */
-    //% block="ItemBox $this(ItemBox) add $name %sprite "    
-    add(name:string, obj: Object) {
-    // add(name:string, image: Image) {
-        // let item = new Item(name, sprite);
-        // this._items.push(item);
+    //% block="ItemBox $this(ItemBox) add $name $sprite "    
+    add(name:string, sprite: Sprite) {
+        let item = new Item(name, sprite);
+        this._items.push(item);
     }
 
     /**
@@ -187,10 +186,9 @@ class ItemBox {
     update() {
         this._frame.setPosition(scene.cameraProperty(CameraProperty.X), scene.cameraProperty(CameraProperty.Y) + 1);
         this._focus.setPosition(scene.cameraProperty(CameraProperty.X) + this._selected * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
-        // 道具選択枠.setPosition(scene.cameraProperty(CameraProperty.X) + 道具インデックス * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 48)
-        // for (let 道具2 of 道具リスト) {
-        //     道具2.setPosition(scene.cameraProperty(CameraProperty.X) + 道具リスト.indexOf(道具2) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 48)
-        // }
+        for (let item of this._items) {
+            item._sprite.setPosition(scene.cameraProperty(CameraProperty.X) + this._items.indexOf(item) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
+        }
 
     }
 
@@ -203,14 +201,6 @@ class ItemBox {
 //% color="#FF8000"
 namespace Items {
 
-    // /**
-    //  * Create a Item and automtically set it to a variable
-    //  */
-    // //% block="create Item"
-    // //% blockSetVariable=Item
-    // export function createItem(name : string): Item {
-    //     return new Item(name);
-    // }
 
     /**
      * Create a ItemBox and automtically set it to a variable
@@ -222,57 +212,3 @@ namespace Items {
     }
 
 }
-
-
-// function 道具箱生成 () {
-//     道具リスト = []
-//     for (let 道具 of [assets.image`ハンマー`, assets.tile`壁タイル`, assets.tile`ハシゴタイル`, assets.image`ハンドガン`]) {
-//         道具リスト.push(sprites.create(道具, SpriteKind.Items))
-//     }
-//     道具インデックス = 0
-//     道具箱 = sprites.create(img`
-//         55555555555555555555555555555555555555555555555555555555555555555555555555555555
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         5...............5...............5...............5...............5..............5
-//         55555555555555555555555555555555555555555555555555555555555555555555555555555555
-//         `, SpriteKind.Items)
-//     道具選択枠 = sprites.create(img`
-//         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-//         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 . . . . . . . . . . . . 3 3 
-//         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-//         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-//         `, SpriteKind.Items)
-// }
-
-
-// function 道具箱更新 () {
-//     道具箱.setPosition(scene.cameraProperty(CameraProperty.X), scene.cameraProperty(CameraProperty.Y) + 48)
-//     道具選択枠.setPosition(scene.cameraProperty(CameraProperty.X) + 道具インデックス * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 48)
-//     for (let 道具2 of 道具リスト) {
-//         道具2.setPosition(scene.cameraProperty(CameraProperty.X) + 道具リスト.indexOf(道具2) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 48)
-//     }
-// }
