@@ -35,6 +35,7 @@ class Item {
     _name: string;
     _sprite: Sprite;
     _frame: Sprite;
+    _set_x: number;
 
     constructor(name: string, sprite: Sprite) {
         this._name = name;
@@ -45,31 +46,23 @@ class Item {
     }
 
     setPosition(x: number, y: number) {
+        this._set_x = x;
         this._sprite.setPosition(x, y);
         this._frame.setPosition(x-1, y);
     }
+
+    getSprite() {
+        return this._sprite;
+    }
+
+    debugPrint() {
+        console.log("name:" + this._name);
+        console.log("_x  :" + this._set_x);
+        console.log("x   :" + this._sprite.x);
+        console.log("y   :" + this._sprite.y);
+    }
 }
 
-function createItemFrame(): Sprite {
-    return sprites.create(img`
-        55555555555555555555555555555555555555555555555555555555555555555555555555555555
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        5...............5...............5...............5...............5..............5
-        55555555555555555555555555555555555555555555555555555555555555555555555555555555
-        `, SpriteKind.Items)
-}
 
 function createItemFocus(): Sprite {
     return sprites.create(img`
@@ -99,16 +92,16 @@ function createItemFocus(): Sprite {
 class ItemBox {
     _selected: number;
     _focus: Sprite;
-    _frame: Sprite;
+    // _frame: Sprite;
 
     _items: Item[];
 
     constructor() {
         this._selected = 0;
-        this._frame = createItemFrame();
-        this._frame.z = 0;
         this._focus = createItemFocus();
         this._focus.z = 1;
+        this._focus.setFlag(SpriteFlag.RelativeToCamera, true);
+
 
         this._items = [];
     }
@@ -125,11 +118,32 @@ class ItemBox {
         let item = new Item(name, sprite);
         this._items.push(item);
 
-        let start = scene.screenWidth() / 2 - this._items.length * 32 / 2 - 8;
-        for (let _item of this._items) {
-            item.setPosition(this._items.indexOf(item) * 32 + start, scene.screenHeight()-32);
-            // item._sprite.setPosition(this._items.indexOf(item) * 32 + start, scene.screenHeight()-32)
+        // let start = scene.screenWidth() / 2 - this._items.length * 32 / 2 - 8;
+        // for (let _item of this._items) {
+        //     item.setPosition(this._items.indexOf(item) * 32 + start, scene.screenHeight()-32);
+        // }
+
+        for(let index=0; index<this._items.length; index++) {
+            let _item = this._items[index];
+            let pos = this._calcPos(_item.getSprite(), index);
+            _item.setPosition(pos.x, pos.y);
         }
+
+        // for (let _item of this._items) {
+        //     let pos = this._calcPos(_item.getSprite(), this._items.indexOf(_item));
+        //     item.setPosition(pos.x, pos.y);
+        // }
+
+        this._updateFocus();
+        // console.log("---------------------");
+
+        // {
+        //     let pos = this._calcPos(this._selected);
+        //     this._focus.setPosition(pos.x, pos.y);
+        // }
+            
+
+        // this._focus.setPosition(scene.cameraProperty(CameraProperty.X) + this._selected * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
 
     }
 
@@ -144,6 +158,7 @@ class ItemBox {
         this._selected += 1;
         if( this._selected >= this._items.length )
             this._selected = 0;
+        this._updateFocus();
     }
 
     //% block="prev $this(ItemBox)"    
@@ -151,6 +166,7 @@ class ItemBox {
         this._selected -= 1;
         if( this._selected < 0)
             this._selected = this._items.length - 1;
+        this._updateFocus();
     }
     
     /**
@@ -159,14 +175,54 @@ class ItemBox {
      */
     //% block="Update $this(ItemBox)"    
     update() {
-        this._frame.setPosition(scene.cameraProperty(CameraProperty.X), scene.cameraProperty(CameraProperty.Y) + 1);
-        this._focus.setPosition(scene.cameraProperty(CameraProperty.X) + this._selected * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
+        this.debugPrint();
+        // this._focus.setPosition(scene.cameraProperty(CameraProperty.X) + this._selected * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
         // for (let item of this._items) {
         //     item._sprite.setPosition(scene.cameraProperty(CameraProperty.X) + this._items.indexOf(item) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
         // }
 
     }
 
+    _calcPos(sprite: Sprite, index: number) {
+        let iconSize = sprite.image.width;
+        // let iconSize = 16;
+
+        let center = scene.screenWidth() / 2.0; 
+        let itemCenter = (this._items.length * iconSize) / 2.0;
+        let start = center - itemCenter;
+        let pos = {
+            x: index * iconSize + start,
+            y: scene.screenHeight() - iconSize
+        }
+
+        return pos;
+    }
+
+    _updateFocus() {
+        let pos = this._calcPos(this._focus, this._selected);
+        this._focus.setPosition(pos.x, pos.y);
+    }
+
+    debugPrint() {
+
+        // console.log("center:" + center);
+        // console.log("itemCenter:" + itemCenter);
+        // console.log("iconSize:" + iconSize);
+        // console.log("pos.x:" + pos.x);
+        // console.log("pos.y:" + pos.y);
+
+        // console.log("screen.width:" + scene.screenWidth());
+        // console.log("screen.height:" + scene.screenHeight());
+
+
+
+        for (let item of this._items) {
+            item.debugPrint();
+        }
+
+        console.log("this._items.length:" + this._items.length);
+        console.log("this._selected:" + this._selected);
+    }
 
 }
 
