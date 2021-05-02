@@ -81,7 +81,7 @@ function createItemFocus(): Sprite {
         3 3 . . . . . . . . . . . . 3 3 
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        `, SpriteKind.Items)
+        `, SpriteKind.ItemsFrame)
 }
 
 /**
@@ -125,6 +125,9 @@ class ItemBox {
 
         this._updateFocus();
     }
+
+
+
 
     //% block="ItemBox $this(ItemBox) selected $name "    
     isSelected(name:string) : boolean {
