@@ -62,7 +62,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             タイル生成(冒険者, 1, 0, assets.tile`ハシゴタイル`)
         }
     } else if (ItemBox2.isSelected("銃")) {
-        if (冒険者の向き == "左") {
+        if (controller.up.isPressed()) {
+            弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸0`, 冒険者, 0, -200)
+        } else if (冒険者の向き == "左") {
             弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, -200, 0)
         } else if (冒険者の向き == "右") {
             弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, 200, 0)
