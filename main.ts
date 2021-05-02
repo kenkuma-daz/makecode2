@@ -31,7 +31,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(冒険者, 0, 0)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (道具リスト[道具インデックス].image.equals(assets.image`ハンマー`)) {
+    if (ItemBox2.isSelected("ハンマー")) {
         if (controller.up.isPressed()) {
             壁タイル破壊(冒険者, 0, -1)
         } else if (controller.down.isPressed()) {
@@ -41,7 +41,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         } else if (冒険者の向き == "右") {
             壁タイル破壊(冒険者, 1, 0)
         }
-    } else if (道具リスト[道具インデックス].image.equals(assets.tile`壁タイル`)) {
+    } else if (ItemBox2.isSelected("壁")) {
         if (controller.up.isPressed()) {
             壁生成(冒険者, 0, -1, assets.tile`壁タイル`)
         } else if (controller.down.isPressed()) {
@@ -51,7 +51,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         } else if (冒険者の向き == "右") {
             壁生成(冒険者, 1, 0, assets.tile`壁タイル`)
         }
-    } else if (道具リスト[道具インデックス].image.equals(assets.tile`ハシゴタイル`)) {
+    } else if (ItemBox2.isSelected("ハシゴ")) {
         if (controller.up.isPressed()) {
             タイル生成(冒険者, 0, -1, assets.tile`ハシゴタイル`)
         } else if (controller.down.isPressed()) {
@@ -61,7 +61,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         } else if (冒険者の向き == "右") {
             タイル生成(冒険者, 1, 0, assets.tile`ハシゴタイル`)
         }
-    } else if (道具リスト[道具インデックス].image.equals(assets.image`ハンドガン`)) {
+    } else if (ItemBox2.isSelected("銃")) {
         if (冒険者の向き == "左") {
             弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, -200, 0)
         } else if (冒険者の向き == "右") {
@@ -359,11 +359,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let 道具選択枠: Sprite = null
 let 道具箱: Sprite = null
-let ItemBox2: ItemBox = null
+let 道具リスト: Sprite[] = []
+let 道具インデックス = 0
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
-let 道具インデックス = 0
-let 道具リスト: Sprite[] = []
+let ItemBox2: ItemBox = null
 let モンスター: Sprite = null
 let 冒険者: Sprite = null
 道具箱生成org()
