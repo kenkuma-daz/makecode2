@@ -17,6 +17,7 @@ class Item {
     constructor(name: string, sprite: Sprite) {
         this._name = name;
         this._sprite = sprite;
+        this._sprite.setFlag(SpriteFlag.RelativeToCamera, true);
     }
 }
 
@@ -94,6 +95,12 @@ class ItemBox {
     add(name:string, sprite: Sprite) {
         let item = new Item(name, sprite);
         this._items.push(item);
+
+        let start = scene.screenWidth() / 2 - this._items.length * 32 / 2 - 8;
+        for (let _item of this._items) {
+            item._sprite.setPosition(this._items.indexOf(item) * 32 + start, scene.screenHeight()-32)
+        }
+
     }
 
     //% block="ItemBox $this(ItemBox) selected $name "    
@@ -124,9 +131,9 @@ class ItemBox {
     update() {
         this._frame.setPosition(scene.cameraProperty(CameraProperty.X), scene.cameraProperty(CameraProperty.Y) + 1);
         this._focus.setPosition(scene.cameraProperty(CameraProperty.X) + this._selected * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
-        for (let item of this._items) {
-            item._sprite.setPosition(scene.cameraProperty(CameraProperty.X) + this._items.indexOf(item) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
-        }
+        // for (let item of this._items) {
+        //     item._sprite.setPosition(scene.cameraProperty(CameraProperty.X) + this._items.indexOf(item) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
+        // }
 
     }
 

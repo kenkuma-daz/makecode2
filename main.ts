@@ -76,6 +76,22 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function 道具箱生成 () {
+    ItemBox2 = Items.createEmptyItemBox()
+    for (let 道具 of [assets.image`ハンマー`, assets.tile`壁タイル`, assets.tile`ハシゴタイル`, assets.image`ハンドガン`]) {
+        ItemBox2.add("", sprites.create(道具, SpriteKind.Items))
+    }
+}
+function キャラクタ更新 (sprite: Sprite) {
+    キャラクタアニメーション(sprite)
+    sprite.vy = キャラクタ移動(sprite)
+}
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (controller.B.isPressed()) {
+        ItemBox2.next()
+        道具インデックス = (道具インデックス + (道具リスト.length + 1)) % 道具リスト.length
+    }
+})
+function 道具箱生成org () {
     道具リスト = []
     for (let 道具 of [assets.image`ハンマー`, assets.tile`壁タイル`, assets.tile`ハシゴタイル`, assets.image`ハンドガン`]) {
         道具リスト.push(sprites.create(道具, SpriteKind.Items))
@@ -117,21 +133,7 @@ function 道具箱生成 () {
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
         `, SpriteKind.Items)
-    ItemBox2 = Items.createEmptyItemBox()
-    for (let 道具 of [assets.image`ハンマー`, assets.tile`壁タイル`, assets.tile`ハシゴタイル`, assets.image`ハンドガン`]) {
-        ItemBox2.add("", sprites.create(道具, SpriteKind.Items))
-    }
 }
-function キャラクタ更新 (sprite: Sprite) {
-    キャラクタアニメーション(sprite)
-    sprite.vy = キャラクタ移動(sprite)
-}
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.B.isPressed()) {
-        ItemBox2.next()
-        道具インデックス = (道具インデックス + (道具リスト.length + 1)) % 道具リスト.length
-    }
-})
 function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {
     tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), tile)
     tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), true)
@@ -363,6 +365,7 @@ let 道具インデックス = 0
 let 道具リスト: Sprite[] = []
 let モンスター: Sprite = null
 let 冒険者: Sprite = null
+道具箱生成org()
 道具箱生成()
 tiles.setTilemap(tilemap`level1`)
 scene.setBackgroundColor(9)
