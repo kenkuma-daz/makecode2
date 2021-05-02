@@ -72,7 +72,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         ItemBox2.prev()
-        道具インデックス = (道具インデックス + (道具リスト.length - 1)) % 道具リスト.length
     }
 })
 function 道具箱生成 () {
@@ -89,7 +88,6 @@ function キャラクタ更新 (sprite: Sprite) {
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         ItemBox2.next()
-        道具インデックス = (道具インデックス + (道具リスト.length + 1)) % 道具リスト.length
     }
 })
 function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {
@@ -307,8 +305,6 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
 })
-let 道具リスト: number[] = []
-let 道具インデックス = 0
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
 let ItemBox2: ItemBox = null
