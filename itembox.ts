@@ -1,9 +1,30 @@
 
 
 
-// namespace SpriteKind {
-//     export const Items = SpriteKind.create()
-// }
+namespace SpriteKind {
+    export const ItemsFrame = SpriteKind.create()
+}
+
+function createItemFrame2(): Sprite {
+    return sprites.create(img`
+        5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 . . . . . . . . . . . . . . 5 
+        5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+        `, SpriteKind.ItemsFrame)
+}
 
 
 /**
@@ -13,11 +34,19 @@
 class Item {
     _name: string;
     _sprite: Sprite;
+    _frame: Sprite;
 
     constructor(name: string, sprite: Sprite) {
         this._name = name;
         this._sprite = sprite;
         this._sprite.setFlag(SpriteFlag.RelativeToCamera, true);
+        this._frame = createItemFrame2();
+        this._frame.setFlag(SpriteFlag.RelativeToCamera, true);
+    }
+
+    setPosition(x: number, y: number) {
+        this._sprite.setPosition(x, y);
+        this._frame.setPosition(x-1, y);
     }
 }
 
@@ -98,7 +127,8 @@ class ItemBox {
 
         let start = scene.screenWidth() / 2 - this._items.length * 32 / 2 - 8;
         for (let _item of this._items) {
-            item._sprite.setPosition(this._items.indexOf(item) * 32 + start, scene.screenHeight()-32)
+            item.setPosition(this._items.indexOf(item) * 32 + start, scene.screenHeight()-32);
+            // item._sprite.setPosition(this._items.indexOf(item) * 32 + start, scene.screenHeight()-32)
         }
 
     }
