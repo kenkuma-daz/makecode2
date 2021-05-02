@@ -13,13 +13,14 @@
         "tilemap.g.jres",
         "tilemap.g.ts",
         "images.g.jres",
-        "images.g.ts"
+        "images.g.ts",
+        "itembox.ts"
     ],
     "testFiles": [
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.4.40",
+        "target": "1.4.41",
         "targetId": "arcade"
     },
     "supportedTargets": [
