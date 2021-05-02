@@ -1,6 +1,5 @@
 
 
-
 namespace SpriteKind {
     export const ItemsFrame = SpriteKind.create()
 }
@@ -118,33 +117,13 @@ class ItemBox {
         let item = new Item(name, sprite);
         this._items.push(item);
 
-        // let start = scene.screenWidth() / 2 - this._items.length * 32 / 2 - 8;
-        // for (let _item of this._items) {
-        //     item.setPosition(this._items.indexOf(item) * 32 + start, scene.screenHeight()-32);
-        // }
-
         for(let index=0; index<this._items.length; index++) {
             let _item = this._items[index];
             let pos = this._calcPos(_item.getSprite(), index);
             _item.setPosition(pos.x, pos.y);
         }
 
-        // for (let _item of this._items) {
-        //     let pos = this._calcPos(_item.getSprite(), this._items.indexOf(_item));
-        //     item.setPosition(pos.x, pos.y);
-        // }
-
         this._updateFocus();
-        // console.log("---------------------");
-
-        // {
-        //     let pos = this._calcPos(this._selected);
-        //     this._focus.setPosition(pos.x, pos.y);
-        // }
-            
-
-        // this._focus.setPosition(scene.cameraProperty(CameraProperty.X) + this._selected * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
-
     }
 
     //% block="ItemBox $this(ItemBox) selected $name "    
@@ -176,11 +155,6 @@ class ItemBox {
     //% block="Update $this(ItemBox)"    
     update() {
         this.debugPrint();
-        // this._focus.setPosition(scene.cameraProperty(CameraProperty.X) + this._selected * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
-        // for (let item of this._items) {
-        //     item._sprite.setPosition(scene.cameraProperty(CameraProperty.X) + this._items.indexOf(item) * 16 - 32, scene.cameraProperty(CameraProperty.Y) + 1)
-        // }
-
     }
 
     _calcPos(sprite: Sprite, index: number) {
@@ -204,18 +178,6 @@ class ItemBox {
     }
 
     debugPrint() {
-
-        // console.log("center:" + center);
-        // console.log("itemCenter:" + itemCenter);
-        // console.log("iconSize:" + iconSize);
-        // console.log("pos.x:" + pos.x);
-        // console.log("pos.y:" + pos.y);
-
-        // console.log("screen.width:" + scene.screenWidth());
-        // console.log("screen.height:" + scene.screenHeight());
-
-
-
         for (let item of this._items) {
             item.debugPrint();
         }
