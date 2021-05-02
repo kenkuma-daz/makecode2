@@ -148,6 +148,11 @@ class ItemBox {
         this._updateFocus();
     }
     
+    //% block="on event with $color"
+    onEventWithArgs(color: number, handler: () => void) {
+        handler();
+    }
+
     _calcPos(sprite: Sprite, index: number) {
         let iconSize = sprite.image.width;
 
