@@ -148,15 +148,6 @@ class ItemBox {
         this._updateFocus();
     }
     
-    /**
-     * Use "$this" to define a variable block that
-     * references the "this" pointer.
-     */
-    //% block="Update $this(ItemBox)"    
-    update() {
-        this.debugPrint();
-    }
-
     _calcPos(sprite: Sprite, index: number) {
         let iconSize = sprite.image.width;
         // let iconSize = 16;

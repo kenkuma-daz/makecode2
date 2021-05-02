@@ -307,11 +307,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
+let ItemBox2: ItemBox = null
 let モンスター: Sprite = null
 let 冒険者: Sprite = null
-let ItemBox2: ItemBox = null
 道具箱生成()
-ItemBox2.update()
 tiles.setTilemap(tilemap`level1`)
 scene.setBackgroundColor(9)
 冒険者 = sprites.create(img`
