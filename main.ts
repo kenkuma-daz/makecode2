@@ -30,8 +30,11 @@ function モンスター作成 () {
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(冒険者, 0, 0)
 })
+Items.onEventWithArgs(null, "", function () {
+	
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (ItemBox2.isSelected("ハンマー")) {
+    if (itemBox.isSelected("ハンマー")) {
         if (controller.up.isPressed()) {
             壁タイル破壊(冒険者, 0, -1)
         } else if (controller.down.isPressed()) {
@@ -41,7 +44,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         } else if (冒険者の向き == "右") {
             壁タイル破壊(冒険者, 1, 0)
         }
-    } else if (ItemBox2.isSelected("壁")) {
+    } else if (itemBox.isSelected("壁")) {
         if (controller.up.isPressed()) {
             壁生成(冒険者, 0, -1, assets.tile`壁タイル`)
         } else if (controller.down.isPressed()) {
@@ -51,7 +54,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         } else if (冒険者の向き == "右") {
             壁生成(冒険者, 1, 0, assets.tile`壁タイル`)
         }
-    } else if (ItemBox2.isSelected("ハシゴ")) {
+    } else if (itemBox.isSelected("ハシゴ")) {
         if (controller.up.isPressed()) {
             タイル生成(冒険者, 0, -1, assets.tile`ハシゴタイル`)
         } else if (controller.down.isPressed()) {
@@ -61,7 +64,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         } else if (冒険者の向き == "右") {
             タイル生成(冒険者, 1, 0, assets.tile`ハシゴタイル`)
         }
-    } else if (ItemBox2.isSelected("銃")) {
+    } else if (itemBox.isSelected("銃")) {
         if (controller.up.isPressed()) {
             弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸0`, 冒険者, 0, -200)
         } else if (冒険者の向き == "左") {
@@ -73,15 +76,15 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
-        ItemBox2.prev()
+        itemBox.prev()
     }
 })
 function 道具箱生成 () {
-    ItemBox2 = Items.createEmptyItemBox()
-    ItemBox2.add("ハンマー", sprites.create(assets.image`ハンマー`, SpriteKind.Items))
-    ItemBox2.add("壁", sprites.create(assets.tile`壁タイル`, SpriteKind.Items))
-    ItemBox2.add("ハシゴ", sprites.create(assets.tile`ハシゴタイル`, SpriteKind.Items))
-    ItemBox2.add("銃", sprites.create(assets.image`ハンドガン`, SpriteKind.Items))
+    itemBox = Items.createEmptyItemBox()
+    itemBox.add("ハンマー", sprites.create(assets.image`ハンマー`, SpriteKind.Items))
+    itemBox.add("壁", sprites.create(assets.tile`壁タイル`, SpriteKind.Items))
+    itemBox.add("ハシゴ", sprites.create(assets.tile`ハシゴタイル`, SpriteKind.Items))
+    itemBox.add("銃", sprites.create(assets.image`ハンドガン`, SpriteKind.Items))
 }
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
@@ -89,7 +92,7 @@ function キャラクタ更新 (sprite: Sprite) {
 }
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
-        ItemBox2.next()
+        itemBox.next()
     }
 })
 function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {
@@ -309,7 +312,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
-let ItemBox2: ItemBox = null
+let itemBox: ItemBox = null
 let モンスター: Sprite = null
 let 冒険者: Sprite = null
 道具箱生成()

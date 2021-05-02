@@ -112,7 +112,7 @@ class ItemBox {
      * @param name
      * @param sprite
      */
-    //% block="ItemBox $this(ItemBox) add $name $sprite "    
+    //% block="ItemBox $this(itemBox) add $name $sprite "    
     add(name:string, sprite: Sprite) {
         let item = new Item(name, sprite);
         this._items.push(item);
@@ -129,13 +129,13 @@ class ItemBox {
 
 
 
-    //% block="ItemBox $this(ItemBox) selected $name "    
+    //% block="ItemBox $this(itemBox) selected $name "    
     isSelected(name:string) : boolean {
         let item = this._items[this._selected];
         return item._name.compare(name) == 0;
     }
     
-    //% block="next $this(ItemBox)"    
+    //% block="next $this(itemBox)"    
     next() {
         this._selected += 1;
         if( this._selected >= this._items.length )
@@ -143,7 +143,7 @@ class ItemBox {
         this._updateFocus();
     }
 
-    //% block="prev $this(ItemBox)"    
+    //% block="prev $this(itemBox)"    
     prev() {
         this._selected -= 1;
         if( this._selected < 0)
@@ -151,10 +151,6 @@ class ItemBox {
         this._updateFocus();
     }
     
-    //% block="on event with $color"
-    onEventWithArgs(color: number, handler: () => void) {
-        handler();
-    }
 
     _calcPos(sprite: Sprite, index: number) {
         let iconSize = sprite.image.width;
@@ -201,5 +197,12 @@ namespace Items {
     export function createEmptyItemBox(): ItemBox {
         return new ItemBox();
     }
+
+
+    //% block="$itemBox on event with $name"
+    export function onEventWithArgs(itemBox: ItemBox, name: string, handler: () => void) {
+        handler();
+    }
+
 
 }
