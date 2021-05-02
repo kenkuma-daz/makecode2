@@ -150,7 +150,6 @@ class ItemBox {
     
     _calcPos(sprite: Sprite, index: number) {
         let iconSize = sprite.image.width;
-        // let iconSize = 16;
 
         let center = scene.screenWidth() / 2.0; 
         let itemCenter = (this._items.length * iconSize) / 2.0;
@@ -165,7 +164,7 @@ class ItemBox {
 
     _updateFocus() {
         let pos = this._calcPos(this._focus, this._selected);
-        this._focus.setPosition(pos.x, pos.y);
+        this._focus.setPosition(pos.x-1, pos.y);
     }
 
     debugPrint() {
