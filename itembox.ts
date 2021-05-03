@@ -81,7 +81,7 @@ function createItemFocus(): Sprite {
         3 3 . . . . . . . . . . . . 3 3 
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        `, SpriteKind.Items)
+        `, SpriteKind.ItemsFrame)
 }
 
 /**
@@ -94,6 +94,8 @@ class ItemBox {
     // _frame: Sprite;
 
     _items: Item[];
+    _listeners : Listener[];
+
 
     constructor() {
         this._selected = 0;
@@ -103,17 +105,32 @@ class ItemBox {
 
 
         this._items = [];
+        this._listeners = null;
     }
 
+    attach(listeners : Listener[]) {
+        this._listeners = listeners;
+    }
+
+
+    _findListenerByName(name: string) {
+        let _listener = this._listeners.find((listener: Listener, index: number) => {
+            return listener._name.compare(name) == 0;
+        });
+        if( _listener == undefined )
+            return null;
+        return _listener;
+    }
     
     /**
      * Use "$this" to define a variable block that
      * references the "this" pointer.
      * @param name
-     * @param sprite
+     * @param Image
      */
-    //% block="ItemBox $this(ItemBox) add $name $sprite "    
-    add(name:string, sprite: Sprite) {
+    //% block="ItemBox $this(itemBox) add $name $img=screen_image_picker "    
+    add(name:string, img: Image) {
+        let sprite = sprites.create(img, SpriteKind.ItemsFrame);
         let item = new Item(name, sprite);
         this._items.push(item);
 
@@ -126,13 +143,25 @@ class ItemBox {
         this._updateFocus();
     }
 
-    //% block="ItemBox $this(ItemBox) selected $name "    
+    //% block="action $this(itemBox)"    
+    action() {
+        let item = this._items[this._selected];
+        if( !item )
+            return;
+        let listener = this._findListenerByName(item._name);
+        if( !listener )
+            return;
+        listener._handler();
+
+    }
+
+    //% block="ItemBox $this(itemBox) selected $name "    
     isSelected(name:string) : boolean {
         let item = this._items[this._selected];
         return item._name.compare(name) == 0;
     }
     
-    //% block="next $this(ItemBox)"    
+    //% block="next $this(itemBox)"    
     next() {
         this._selected += 1;
         if( this._selected >= this._items.length )
@@ -140,7 +169,7 @@ class ItemBox {
         this._updateFocus();
     }
 
-    //% block="prev $this(ItemBox)"    
+    //% block="prev $this(itemBox)"    
     prev() {
         this._selected -= 1;
         if( this._selected < 0)
@@ -148,10 +177,6 @@ class ItemBox {
         this._updateFocus();
     }
     
-    //% block="on event with $color"
-    onEventWithArgs(color: number, handler: () => void) {
-        handler();
-    }
 
     _calcPos(sprite: Sprite, index: number) {
         let iconSize = sprite.image.width;
@@ -183,12 +208,23 @@ class ItemBox {
 
 }
 
+
+
+class Listener {
+    _name: string;
+    _handler: () => void;
+
+    constructor() {
+    }
+}
+
+
 /**
  * Widget namespace using en external class
  */
 //% color="#FF8000"
 namespace Items {
-
+    let _listeners : Listener[] = [];
 
     /**
      * Create a ItemBox and automtically set it to a variable
@@ -196,7 +232,17 @@ namespace Items {
     //% block="empty ItemBox"
     //% blockSetVariable=ItemBox
     export function createEmptyItemBox(): ItemBox {
-        return new ItemBox();
+        let itemBox = new ItemBox();
+        itemBox.attach(_listeners);
+        return itemBox;
+    }
+
+    //% block="on event $name executed"
+    export function onEvent(name: string, handler: () => void) {
+        let listener = new Listener();
+        listener._name = name;
+        listener._handler = handler;
+        _listeners.push(listener);
     }
 
 }
