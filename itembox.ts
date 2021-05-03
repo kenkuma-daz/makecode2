@@ -142,6 +142,10 @@ class ItemBox {
         this._updateFocus();
     }
 
+    //% block="update ItemBox $this(itemBox) selected %img=screen_image_picker "    
+    updateImage(img: Image) {
+
+    }
 
 
 
