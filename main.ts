@@ -30,9 +30,6 @@ function モンスター作成 () {
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(冒険者, 0, 0)
 })
-Items.onEventWithArgs(null, "", function () {
-	
-})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (itemBox.isSelected("ハンマー")) {
         if (controller.up.isPressed()) {
@@ -94,6 +91,9 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.next()
     }
+})
+Items.onEvent("", function () {
+	
 })
 function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {
     tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), tile)

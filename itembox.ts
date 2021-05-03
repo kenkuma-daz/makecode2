@@ -94,6 +94,8 @@ class ItemBox {
     // _frame: Sprite;
 
     _items: Item[];
+    _listeners : Listener[];
+
 
     constructor() {
         this._selected = 0;
@@ -103,8 +105,22 @@ class ItemBox {
 
 
         this._items = [];
+        this._listeners = null;
     }
 
+    attach(listeners : Listener[]) {
+        this._listeners = listeners;
+    }
+
+
+    _findListenerByName(name: string) {
+        let _listener = this._listeners.find((listener: Listener, index: number) => {
+            return listener._name.compare(name) == 0;
+        });
+        if( _listener == undefined )
+            return null;
+        return _listener;
+    }
     
     /**
      * Use "$this" to define a variable block that
@@ -182,12 +198,23 @@ class ItemBox {
 
 }
 
+
+
+class Listener {
+    _name: string;
+    _handler: () => void;
+
+    constructor() {
+    }
+}
+
+
 /**
  * Widget namespace using en external class
  */
 //% color="#FF8000"
 namespace Items {
-
+    let _listeners : Listener[] = [];
 
     /**
      * Create a ItemBox and automtically set it to a variable
@@ -195,14 +222,17 @@ namespace Items {
     //% block="empty ItemBox"
     //% blockSetVariable=ItemBox
     export function createEmptyItemBox(): ItemBox {
-        return new ItemBox();
+        let itemBox = new ItemBox();
+        itemBox.attach(_listeners);
+        return itemBox;
     }
 
-
-    //% block="$itemBox on event with $name"
-    export function onEventWithArgs(itemBox: ItemBox, name: string, handler: () => void) {
-        handler();
+    //% block="on event $name executed"
+    export function onEvent(name: string, handler: () => void) {
+        let listener = new Listener();
+        listener._name = name;
+        listener._handler = handler;
+        _listeners.push(listener);
     }
-
 
 }
