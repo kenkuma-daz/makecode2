@@ -126,10 +126,11 @@ class ItemBox {
      * Use "$this" to define a variable block that
      * references the "this" pointer.
      * @param name
-     * @param sprite
+     * @param Image
      */
-    //% block="ItemBox $this(itemBox) add $name $sprite "    
-    add(name:string, sprite: Sprite) {
+    //% block="ItemBox $this(itemBox) add $name $img=screen_image_picker "    
+    add(name:string, img: Image) {
+        let sprite = sprites.create(img, SpriteKind.ItemsFrame);
         let item = new Item(name, sprite);
         this._items.push(item);
 
@@ -142,12 +143,17 @@ class ItemBox {
         this._updateFocus();
     }
 
-    //% block="update ItemBox $this(itemBox) selected %img=screen_image_picker "    
-    updateImage(img: Image) {
+    //% block="action $this(itemBox)"    
+    action() {
+        let item = this._items[this._selected];
+        if( !item )
+            return;
+        let listener = this._findListenerByName(item._name);
+        if( !listener )
+            return;
+        listener._handler();
 
     }
-
-
 
     //% block="ItemBox $this(itemBox) selected $name "    
     isSelected(name:string) : boolean {
