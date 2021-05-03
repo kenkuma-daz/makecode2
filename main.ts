@@ -66,11 +66,10 @@ function 道具箱生成 () {
     itemBox.add("壁", assets.tile`壁タイル`)
     itemBox.add("ハシゴ", assets.tile`ハシゴタイル`)
     itemBox.add("銃", assets.image`ハンドガン`)
+    itemBox.add("ジェットパック", assets.image`myImage0`)
 }
 Items.onEvent("銃", function () {
-    if (controller.up.isPressed()) {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸0`, 冒険者, 0, -200)
-    } else if (冒険者の向き == "左") {
+    if (冒険者の向き == "左") {
         弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, -200, 0)
     } else if (冒険者の向き == "右") {
         弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, 200, 0)
@@ -91,6 +90,9 @@ function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
     sprite.vy = キャラクタ移動(sprite)
 }
+Items.onEvent("ジェットパック", function () {
+	
+})
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.next()
@@ -104,6 +106,9 @@ controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
 function キャラクタ移動 (sprite: Sprite) {
+    if (itemBox.isSelected("ジェットパック") && controller.A.isPressed()) {
+        return -80
+    }
     if (キャラクタ壁接触(sprite, "下")) {
         if (controller.up.isPressed()) {
             return -200

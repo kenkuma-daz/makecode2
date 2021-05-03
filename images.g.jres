@@ -4,11 +4,6 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "ハンマー"
     },
-    "image2": {
-        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wAAAAAA//z8AAAAAADw/PwAAAAAAPD8/AAAAAAA8Pz8AAAAAADw/Pz/DwAAAPD//wAPAAAA8Mz8Dw8AAAD/zOzu7u4AAP/M7Ozs7AAA/Mzs7OzsAAD//+/u7u4AAAAAAAAAAAAAAAAAAAAAAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "ハンドガン"
-    },
     "image5": {
         "data": "hwQQABAAAAAAAAAAAAAAAAAAAP//AAAAAAAAz/wAAAAAAADP/AAAAAAAAP//AAAAAAAAAAAAAAAAAAD//wAAAAAAAM/8AAAAAAAAz/wAAAAAAAD//wAAAAAAAAAAAAAAAAAA//8AAAAAAADP/AAAAAAAAM/8AAAAAAAA//8AAAAAAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
@@ -23,6 +18,16 @@
         "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAMwMAAAA/ADAzAwAAADMD8zMDwAAAMD8zPwAAAAAsMzMDwAAAAC7y/wAAAAAsLu7zA8AAAC7u7vL/AAAsLu7uwDMAAC7u7sLAAAAsLu7uwAAAACwu7sLAAAAALC7uwAAAAAAsLsLAAAAAAAAAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "myImage"
+    },
+    "image2": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wAAAAAA//z8AAAAAADw/PwAAAAAAPD8/AAAAAAA8Pz8AAAAAADw/Pz/DwAAAPD//wAPAAAA8Mz8Dw8AAAD/zOzu7u4AAP/M7Ozs7AAA/Mzs7OzsAAD//+/u7u4AAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "ハンドガン"
+    },
+    "image6": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAABVVVUFAAAAAFWZKVUAAAAAVZkpVQAAAABVVVUFAAAAAAAO4AAAAAAAAA7gAAAAAAAADuAAAAAAAAAO4AAAAAAAVVVVBQAAAABVmSlVAAAAAFWZKVUAAAAAVVVVBQAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage0"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",

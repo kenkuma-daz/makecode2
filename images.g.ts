@@ -22,25 +22,6 @@ namespace myImages {
 . . . . . . . . . . . . . e e . 
 . . . . . . . . . . . . . . . . 
 `;
-            case "image2":
-            case "ハンドガン":return img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . f f . . . . . . f f c f . . 
-. . f f f f f f f f f f f f . . 
-. . f c c c c c f c c c c f . . 
-. . f f f f f f f c c c c f . . 
-. . f c c c c c f c c c c f . . 
-. . f f f f f f f f e e e e . . 
-. . . . . . . f . f e c c e . . 
-. . . . . . . f . . e e e e . . 
-. . . . . . . f f f e c c e . . 
-. . . . . . . . . . e e e e . . 
-. . . . . . . . . . e c c e . . 
-. . . . . . . . . . e e e e . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-`;
             case "image5":
             case "弾丸":return img`
 . . . . . . . . . . . . . . . . 
@@ -96,6 +77,44 @@ namespace myImages {
 . c c c c f . f c c . . . . . . 
 . c c c f . . . f c . . . . . . 
 . c c f . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`;
+            case "image2":
+            case "ハンドガン":return img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . f f . . . . . . f f c f . . 
+. . f f f f f f f f f f f f . . 
+. . f c c c c c f c c c c f . . 
+. . f f f f f f f c c c c f . . 
+. . f c c c c c f c c c c f . . 
+. . f f f f f f f f e e e e . . 
+. . . . . . . f . f e c c e . . 
+. . . . . . . f . . e e e e . . 
+. . . . . . . f f f e c c e . . 
+. . . . . . . . . . e e e e . . 
+. . . . . . . . . . e c c e . . 
+. . . . . . . . . . e e e e . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`;
+            case "image6":
+            case "myImage0":return img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . 5 5 5 5 . . . . 5 5 5 5 . . 
+. . 5 5 5 5 . . . . 5 5 5 5 . . 
+. . 5 9 9 5 e e e e 5 9 9 5 . . 
+. . 5 9 9 5 . . . . 5 9 9 5 . . 
+. . 5 9 9 5 . . . . 5 9 9 5 . . 
+. . 5 2 2 5 e e e e 5 2 2 5 . . 
+. . 5 5 5 5 . . . . 5 5 5 5 . . 
+. . . 5 5 . . . . . . 5 5 . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `;
         }
