@@ -79,6 +79,25 @@ namespace myImages {
 . . . . . . f f f f . . . . . . 
 . . . . . . . . . . . . . . . . 
 `;
+            case "image4":
+            case "myImage":return img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . b b b b . 
+. . . . . . . . . . b b b b b . 
+. . . . . . . . . b b b b b b . 
+. . . . . . . . b b b b b b b . 
+. . . . . . . b b b b b b b . . 
+. . c c . . b b b b b b b . . . 
+. . f c c b b b b b b b . . . . 
+. . . f c c b b b b b . . . . . 
+. . . . f c c b b b . . . . . . 
+. . . c c c c c b . . . . . . . 
+. . c c c c f c c . . . . . . . 
+. c c c c f . f c c . . . . . . 
+. c c c f . . . f c . . . . . . 
+. c c f . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`;
         }
         return null;
     })
