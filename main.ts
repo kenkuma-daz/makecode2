@@ -60,6 +60,10 @@ Items.onEvent("重力操作", function () {
         tiles.setTilemap(tilemap`level10`)
     } else if (controller.down.isPressed()) {
         tiles.setTilemap(tilemap`level1`)
+    } else if (controller.right.isPressed()) {
+        tiles.setTilemap(tilemap`level12`)
+    } else if (controller.left.isPressed()) {
+        tiles.setTilemap(tilemap`level15`)
     }
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
