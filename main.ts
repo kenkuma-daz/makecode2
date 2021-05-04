@@ -39,9 +39,6 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     itemBox.action()
-    if (itemBox.isSelected(ItemKind.Sword)) {
-        剣を振る(sprites.create(assets.image`myImage0`, SpriteKind.Projectile))
-    }
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
@@ -56,6 +53,26 @@ function 道具箱生成 () {
     itemBox.add(ItemKind.Gun, assets.image`ハンドガン`)
     itemBox.add(ItemKind.Sword, assets.image`myImage`)
 }
+Items.onEvent(ItemKind.Sword, function () {
+    剣を振る(sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Projectile), 冒険者の向き)
+})
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
     sprite.vy = キャラクタ移動(sprite)
@@ -85,13 +102,22 @@ Items.onEvent(ItemKind.Gun, function () {
         弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, 100, 0)
     }
 })
-function 剣を振る (sprite: Sprite) {
-    animation.runImageAnimation(
-    sprite,
-    assets.animation`myAnim`,
-    100,
-    false
-    )
+function 剣を振る (sprite: Sprite, 方向: string) {
+    if (方向 == "左") {
+        animation.runImageAnimation(
+        sprite,
+        assets.animation`sword_left_anim`,
+        100,
+        false
+        )
+    } else if (方向 == "右") {
+        animation.runImageAnimation(
+        sprite,
+        assets.animation`sword_right_anim`,
+        100,
+        false
+        )
+    }
     sprite.setPosition(冒険者.x, 冒険者.y)
     sprite.follow(冒険者, 1000)
     timer.after(300, function () {
