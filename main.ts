@@ -51,7 +51,21 @@ function 道具箱生成 () {
     itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
     itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
     itemBox.add(ItemKind.Gun, assets.image`ハンドガン`)
+    itemBox.add(ItemKind.Sword, assets.image`myImage`)
 }
+Items.onEvent(ItemKind.Sword, function () {
+    if (controller.up.isPressed()) {
+        弾丸 = sprites.createProjectileFromSprite(assets.image`myImage0`, 冒険者, 0, 0)
+    } else if (冒険者の向き == "左") {
+        弾丸 = sprites.createProjectileFromSprite(assets.image`myImage0`, 冒険者, 0, 0)
+    } else if (冒険者の向き == "右") {
+        弾丸 = sprites.createProjectileFromSprite(assets.image`myImage0`, 冒険者, 0, 0)
+    }
+    弾丸.follow(冒険者, 1000)
+    timer.after(1000, function () {
+        弾丸.destroy()
+    })
+})
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
     sprite.vy = キャラクタ移動(sprite)
@@ -74,11 +88,11 @@ Items.onEvent(ItemKind.Hammer, function () {
 })
 Items.onEvent(ItemKind.Gun, function () {
     if (controller.up.isPressed()) {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸0`, 冒険者, 0, -200)
+        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸0`, 冒険者, 0, -100)
     } else if (冒険者の向き == "左") {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, -200, 0)
+        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, -100, 0)
     } else if (冒険者の向き == "右") {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, 200, 0)
+        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, 100, 0)
     }
 })
 function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {

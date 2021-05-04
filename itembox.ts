@@ -221,6 +221,7 @@ class Listener {
 namespace Items {
     let _listeners : Listener[] = [];
 
+
     /**
      * Create a ItemBox and automtically set it to a variable
      */
