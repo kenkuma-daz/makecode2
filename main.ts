@@ -39,6 +39,9 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     itemBox.action()
+    if (itemBox.isSelected(ItemKind.Sword)) {
+        剣を振る(sprites.create(assets.image`myImage0`, SpriteKind.Projectile))
+    }
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
@@ -53,19 +56,6 @@ function 道具箱生成 () {
     itemBox.add(ItemKind.Gun, assets.image`ハンドガン`)
     itemBox.add(ItemKind.Sword, assets.image`myImage`)
 }
-Items.onEvent(ItemKind.Sword, function () {
-    if (controller.up.isPressed()) {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`myImage0`, 冒険者, 0, 0)
-    } else if (冒険者の向き == "左") {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`myImage0`, 冒険者, 0, 0)
-    } else if (冒険者の向き == "右") {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`myImage0`, 冒険者, 0, 0)
-    }
-    弾丸.follow(冒険者, 1000)
-    timer.after(1000, function () {
-        弾丸.destroy()
-    })
-})
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
     sprite.vy = キャラクタ移動(sprite)
@@ -95,6 +85,19 @@ Items.onEvent(ItemKind.Gun, function () {
         弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, 100, 0)
     }
 })
+function 剣を振る (sprite: Sprite) {
+    animation.runImageAnimation(
+    sprite,
+    assets.animation`myAnim`,
+    100,
+    false
+    )
+    sprite.setPosition(冒険者.x, 冒険者.y)
+    sprite.follow(冒険者, 1000)
+    timer.after(300, function () {
+        sprite.destroy()
+    })
+}
 function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {
     tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), tile)
     tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), true)
