@@ -118,31 +118,10 @@ class ItemBox {
         return _listener;
     }
     
-    /**
-     * Use "$this" to define a variable block that
-     * references the "this" pointer.
-     * @param name
-     * @param Image
-     */
-    //% block="ItemBox $this(itemBox) add $name $img=screen_image_picker "    
-    add(name:string, img: Image) {
-        // let sprite = sprites.create(img, SpriteKind.ItemsFrame);
-        // let item = new Item(name, sprite);
-        // this._items.push(item);
-
-        // for(let index=0; index<this._items.length; index++) {
-        //     let _item = this._items[index];
-        //     let pos = this._calcPos(_item.getSprite(), index);
-        //     _item.setPosition(pos.x, pos.y);
-        // }
-
-        // this._updateFocus();
-    }
-
     //% block="ItemBox $this(itemBox) add $itemKind $img"    
     //% itemKind.shadow="item_kind_enum_shim"
     //% img.shadow="screen_image_picker"
-    add2(itemKind:number, img: Image) {
+    add(itemKind:number, img: Image) {
         let sprite = sprites.create(img, SpriteKind.ItemsFrame);
         let item = new Item(itemKind, sprite);
         this._items.push(item);
