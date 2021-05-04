@@ -55,6 +55,13 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     itemBox.action()
 })
+Items.onEvent("重力操作", function () {
+    if (controller.up.isPressed()) {
+        tiles.setTilemap(tilemap`level10`)
+    } else if (controller.down.isPressed()) {
+        tiles.setTilemap(tilemap`level1`)
+    }
+})
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.prev()
@@ -67,6 +74,43 @@ function 道具箱生成 () {
     itemBox.add("ハシゴ", assets.tile`ハシゴタイル`)
     itemBox.add("銃", assets.image`ハンドガン`)
     itemBox.add("ジェットパック", assets.image`myImage0`)
+    itemBox.add("時計", assets.image`myImage1`)
+    itemBox.add("破壊装置", img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . e e e e . . . . . 
+        . . . . . . . e . . . . . . . . 
+        . . . . . . . e . . . . . . . . 
+        . . . . . . . e . . . . . . . . 
+        . . . . f f f f f f f . . . . . 
+        . . . f f f f f f f f f . . . . 
+        . . f f f f f f f f f f f . . . 
+        . . f f f 1 f f f 1 f f f . . . 
+        . . f f f f f f f f f f f . . . 
+        . . f f f f f f f f f f f . . . 
+        . . f f 1 f f f f f 1 f f . . . 
+        . . f f 1 1 1 1 1 1 1 f f . . . 
+        . . f f f f f f f f f f f . . . 
+        . . . f f f f f f f f f . . . . 
+        . . . . f f f f f f f . . . . . 
+        `)
+    itemBox.add("重力操作", img`
+        . . . . . . f . . . . . . . . . 
+        . . . . . f f f . . . . . . . . 
+        . . . . f 1 f 1 f . . . . . . . 
+        . . . f 1 1 f 1 1 f . . . . . . 
+        . . f 1 1 1 f 1 1 1 f . . . . . 
+        . f 1 1 1 1 f 1 1 1 1 f . . . . 
+        f f f f f f f f f f f f f . . . 
+        . f 1 1 1 1 f 1 1 1 1 f . . . . 
+        . . f 1 1 1 f 1 1 1 f . . . . . 
+        . . . f 1 1 f 1 1 f . . . . . . 
+        . . . . f 1 f 1 f . . . . . . . 
+        . . . . . f f f . . . . . . . . 
+        . . . . . . f . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `)
 }
 Items.onEvent("銃", function () {
     if (冒険者の向き == "左") {
@@ -86,16 +130,32 @@ Items.onEvent("ハンマー", function () {
         壁タイル破壊(冒険者, 1, 0)
     }
 })
+Items.onEvent("破壊装置", function () {
+    if (controller.A.isPressed()) {
+        壁タイル破壊(冒険者, 0, -1)
+        壁タイル破壊(冒険者, -1, 0)
+        壁タイル破壊(冒険者, 0, 1)
+        壁タイル破壊(冒険者, 1, 0)
+        壁タイル破壊(冒険者, 1, -1)
+        壁タイル破壊(冒険者, 1, 1)
+        壁タイル破壊(冒険者, -1, -1)
+        壁タイル破壊(冒険者, -1, 1)
+    }
+})
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
     sprite.vy = キャラクタ移動(sprite)
 }
-Items.onEvent("ジェットパック", function () {
-	
-})
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.next()
+    }
+})
+Items.onEvent("時計", function () {
+    if (controller.A.isPressed()) {
+        info.setLife(info.life() + 1)
+        pause(100)
+        info.changeScoreBy(-1)
     }
 })
 function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {
@@ -309,12 +369,15 @@ function キャラクタ壁接触 (sprite: Sprite, 向き: string) {
     return true
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    music.baDing.play()
     otherSprite.destroy(effects.fire, 500)
     モンスター作成()
     info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    music.playMelody("C5 B A G F E D C ", 1000)
     info.changeLifeBy(-1)
+    pause(3000)
 })
 let 弾丸: Sprite = null
 let itemBox: ItemBox = null
@@ -346,9 +409,20 @@ info.setLife(8)
 controller.moveSprite(冒険者, 100, 0)
 scene.cameraFollowSprite(冒険者)
 tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
-for (let index = 0; index < 3; index++) {
+for (let index = 0; index < 5; index++) {
     モンスター作成()
 }
 game.onUpdate(function () {
     キャラクタ更新(冒険者)
+})
+game.onUpdate(function () {
+    if (info.score() == -1) {
+        game.over(false)
+    }
+})
+forever(function () {
+	
+})
+forever(function () {
+	
 })
