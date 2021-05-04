@@ -31,13 +31,12 @@ function createItemFrame2(): Sprite {
  */
 //% blockNamespace=Items color="#FF8000"
 class Item {
-    _name: string;
+    _kind: number;
     _sprite: Sprite;
     _frame: Sprite;
-    _set_x: number;
 
-    constructor(name: string, sprite: Sprite) {
-        this._name = name;
+    constructor(kind: number, sprite: Sprite) {
+        this._kind = kind;
         this._sprite = sprite;
         this._sprite.setFlag(SpriteFlag.RelativeToCamera, true);
         this._frame = createItemFrame2();
@@ -45,7 +44,6 @@ class Item {
     }
 
     setPosition(x: number, y: number) {
-        this._set_x = x;
         this._sprite.setPosition(x, y);
         this._frame.setPosition(x-1, y);
     }
@@ -55,8 +53,6 @@ class Item {
     }
 
     debugPrint() {
-        console.log("name:" + this._name);
-        console.log("_x  :" + this._set_x);
         console.log("x   :" + this._sprite.x);
         console.log("y   :" + this._sprite.y);
     }
@@ -92,7 +88,6 @@ function createItemFocus(): Sprite {
 class ItemBox {
     _selected: number;
     _focus: Sprite;
-    // _frame: Sprite;
 
     _items: Item[];
     _listeners : Listener[];
@@ -114,9 +109,9 @@ class ItemBox {
     }
 
 
-    _findListenerByName(name: string) {
+    _findListenerByKind(itemKind: number) {
         let _listener = this._listeners.find((listener: Listener, index: number) => {
-            return listener._name.compare(name) == 0;
+            return listener._kind == itemKind;
         });
         if( _listener == undefined )
             return null;
@@ -131,17 +126,17 @@ class ItemBox {
      */
     //% block="ItemBox $this(itemBox) add $name $img=screen_image_picker "    
     add(name:string, img: Image) {
-        let sprite = sprites.create(img, SpriteKind.ItemsFrame);
-        let item = new Item(name, sprite);
-        this._items.push(item);
+        // let sprite = sprites.create(img, SpriteKind.ItemsFrame);
+        // let item = new Item(name, sprite);
+        // this._items.push(item);
 
-        for(let index=0; index<this._items.length; index++) {
-            let _item = this._items[index];
-            let pos = this._calcPos(_item.getSprite(), index);
-            _item.setPosition(pos.x, pos.y);
-        }
+        // for(let index=0; index<this._items.length; index++) {
+        //     let _item = this._items[index];
+        //     let pos = this._calcPos(_item.getSprite(), index);
+        //     _item.setPosition(pos.x, pos.y);
+        // }
 
-        this._updateFocus();
+        // this._updateFocus();
     }
 
     //% block="ItemBox $this(itemBox) add $itemKind $img"    
@@ -149,7 +144,7 @@ class ItemBox {
     //% img.shadow="screen_image_picker"
     add2(itemKind:number, img: Image) {
         let sprite = sprites.create(img, SpriteKind.ItemsFrame);
-        let item = new Item(itemKind.toString(), sprite);
+        let item = new Item(itemKind, sprite);
         this._items.push(item);
 
         for(let index=0; index<this._items.length; index++) {
@@ -168,7 +163,7 @@ class ItemBox {
         let item = this._items[this._selected];
         if( !item )
             return;
-        let listener = this._findListenerByName(item._name);
+        let listener = this._findListenerByKind(item._kind);
         if( !listener )
             return;
         listener._handler();
@@ -177,10 +172,16 @@ class ItemBox {
 
     //% block="ItemBox $this(itemBox) selected $name "    
     isSelected(name:string) : boolean {
-        let item = this._items[this._selected];
-        return item._name.compare(name) == 0;
+        return true;
     }
-    
+
+    //% block="ItemBox $this(itemBox) selected $itemKind "    
+    //% itemKind.shadow="item_kind_enum_shim"
+    isSelected2(itemKind:number) : boolean {
+        let item = this._items[this._selected];
+        return item._kind == itemKind;
+    }
+
     //% block="next $this(itemBox)"    
     next() {
         this._selected += 1;
@@ -231,7 +232,7 @@ class ItemBox {
 
 
 class Listener {
-    _name: string;
+    _kind: number;
     _handler: () => void;
 
     constructor() {
@@ -257,14 +258,6 @@ namespace Items {
         return itemBox;
     }
 
-    //% block="on event $name executed"
-    export function onEvent(name: string, handler: () => void) {
-        let listener = new Listener();
-        listener._name = name;
-        listener._handler = handler;
-        _listeners.push(listener);
-    }
-
     //% shim=ENUM_GET
     //% blockId=item_kind_enum_shim
     //% block="Item $arg"
@@ -281,9 +274,9 @@ namespace Items {
     //% blockId=on_event_with_item_kind
     //% block="on event $itemKind executed 2"
     //% itemKind.shadow="item_kind_enum_shim"
-    export function onEvent2(itemKind: number, handler: () => void) {
+    export function onEvent(itemKind: number, handler: () => void) {
         let listener = new Listener();
-        listener._name = itemKind.toString();
+        listener._kind = itemKind;
         listener._handler = handler;
         _listeners.push(listener);
     }    

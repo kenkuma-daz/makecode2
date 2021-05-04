@@ -61,7 +61,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         itemBox.next()
     }
 })
-Items.onEvent2(ItemKind.Hammer, function () {
+Items.onEvent(ItemKind.Hammer, function () {
     if (controller.up.isPressed()) {
         壁タイル破壊(冒険者, 0, -1)
     } else if (controller.down.isPressed()) {
@@ -72,7 +72,7 @@ Items.onEvent2(ItemKind.Hammer, function () {
         壁タイル破壊(冒険者, 1, 0)
     }
 })
-Items.onEvent2(ItemKind.Gun, function () {
+Items.onEvent(ItemKind.Gun, function () {
     if (controller.up.isPressed()) {
         弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸0`, 冒険者, 0, -200)
     } else if (冒険者の向き == "左") {
@@ -88,7 +88,7 @@ function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
-Items.onEvent2(ItemKind.Wall, function () {
+Items.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
         壁生成(冒険者, 0, -1, assets.tile`壁タイル`)
     } else if (controller.down.isPressed()) {
@@ -124,7 +124,7 @@ function 壁タイル破壊 (sprite: Sprite, x: number, y: number) {
     tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), assets.tile`transparency16`)
     tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), false)
 }
-Items.onEvent2(ItemKind.Ladder, function () {
+Items.onEvent(ItemKind.Ladder, function () {
     if (controller.up.isPressed()) {
         タイル生成(冒険者, 0, -1, assets.tile`ハシゴタイル`)
     } else if (controller.down.isPressed()) {
