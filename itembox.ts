@@ -149,14 +149,9 @@ class ItemBox {
 
     }
 
-    //% block="ItemBox $this(itemBox) selected $name "    
-    isSelected(name:string) : boolean {
-        return true;
-    }
-
     //% block="ItemBox $this(itemBox) selected $itemKind "    
     //% itemKind.shadow="item_kind_enum_shim"
-    isSelected2(itemKind:number) : boolean {
+    isSelected(itemKind:number) : boolean {
         let item = this._items[this._selected];
         return item._kind == itemKind;
     }

@@ -47,10 +47,10 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function 道具箱生成 () {
     itemBox = Items.createEmptyItemBox()
-    itemBox.add(ItemKind.Hammer, assets.image`ハンマー`)
-    itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
-    itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
-    itemBox.add(ItemKind.Gun, assets.image`ハンドガン`)
+    itemBox.add(0, assets.image`ハンマー`)
+    itemBox.add(0, assets.tile`壁タイル`)
+    itemBox.add(0, assets.tile`ハシゴタイル`)
+    itemBox.add(0, assets.image`ハンドガン`)
 }
 function キャラクタ更新 (sprite: Sprite) {
     キャラクタアニメーション(sprite)
