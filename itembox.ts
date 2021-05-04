@@ -84,6 +84,7 @@ function createItemFocus(): Sprite {
         `, SpriteKind.ItemsFrame)
 }
 
+
 /**
  * Declare a class outside and attach to a namespace.
  */
@@ -142,6 +143,25 @@ class ItemBox {
 
         this._updateFocus();
     }
+
+    //% block="ItemBox $this(itemBox) add $itemKind $img"    
+    //% itemKind.shadow="item_kind_enum_shim"
+    //% img.shadow="screen_image_picker"
+    add2(itemKind:number, img: Image) {
+        let sprite = sprites.create(img, SpriteKind.ItemsFrame);
+        let item = new Item(itemKind.toString(), sprite);
+        this._items.push(item);
+
+        for(let index=0; index<this._items.length; index++) {
+            let _item = this._items[index];
+            let pos = this._calcPos(_item.getSprite(), index);
+            _item.setPosition(pos.x, pos.y);
+        }
+
+        this._updateFocus();
+    }
+
+
 
     //% block="action $this(itemBox)"    
     action() {
@@ -244,5 +264,30 @@ namespace Items {
         listener._handler = handler;
         _listeners.push(listener);
     }
+
+    //% shim=ENUM_GET
+    //% blockId=item_kind_enum_shim
+    //% block="Item $arg"
+    //% enumName="ItemKind"
+    //% enumMemberName="itemKind"
+    //% enumPromptHint="e.g. Green, Orange, ..."
+    //% enumInitialMembers="Hammer, Wall, Ladder, Gun, Sword"
+    export function _itemKindEnumShim(arg: number) {
+        // This function should do nothing, but must take in a single
+        // argument of type number and return a number value.
+        return arg;
+    }
+
+    //% blockId=on_event_with_item_kind
+    //% block="on event $itemKind executed 2"
+    //% itemKind.shadow="item_kind_enum_shim"
+    export function onEvent2(itemKind: number, handler: () => void) {
+        let listener = new Listener();
+        listener._name = itemKind.toString();
+        listener._handler = handler;
+        _listeners.push(listener);
+    }    
+
+
 
 }
