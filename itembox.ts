@@ -4,25 +4,59 @@ namespace SpriteKind {
     export const ItemBox = SpriteKind.create()
 }
 
-function createItemFrame2(): Sprite {
-    return sprites.create(img`
-        5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 . . . . . . . . . . . . . . 5 
-        5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-        `, SpriteKind.ItemBox)
+namespace itembox.sprite {
+    export function createFrame(): Sprite {
+        return sprites.create(img`
+            5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 . . . . . . . . . . . . . . 5 
+            5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+            `, SpriteKind.ItemBox)
+    }
+
+    export function createFocus(): Sprite {
+        return sprites.create(img`
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 . . . . . . . . . . . . 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            `, SpriteKind.ItemBox)
+    }
+}
+
+
+namespace itembox.listeners {
+    export class Listener {
+        _kind: number;
+        _handler: () => void;
+
+        constructor() {
+        }
+    }
 }
 
 
@@ -39,7 +73,7 @@ class Item {
         this._kind = kind;
         this._sprite = sprite;
         this._sprite.setFlag(SpriteFlag.RelativeToCamera, true);
-        this._frame = createItemFrame2();
+        this._frame = itembox.sprite.createFrame();
         this._frame.setFlag(SpriteFlag.RelativeToCamera, true);
     }
 
@@ -59,26 +93,6 @@ class Item {
 }
 
 
-function createItemFocus(): Sprite {
-    return sprites.create(img`
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 . . . . . . . . . . . . 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        `, SpriteKind.ItemBox)
-}
 
 
 /**
@@ -90,12 +104,12 @@ class ItemBox {
     _focus: Sprite;
 
     _items: Item[];
-    _listeners : Listener[];
+    _listeners : itembox.listeners.Listener[];
 
 
     constructor() {
         this._selected = 0;
-        this._focus = createItemFocus();
+        this._focus = itembox.sprite.createFocus();
         this._focus.z = 1;
         this._focus.setFlag(SpriteFlag.RelativeToCamera, true);
 
@@ -104,13 +118,13 @@ class ItemBox {
         this._listeners = null;
     }
 
-    attach(listeners : Listener[]) {
+    attach(listeners : itembox.listeners.Listener[]) {
         this._listeners = listeners;
     }
 
 
     _findListenerByKind(itemKind: number) {
-        let _listener = this._listeners.find((listener: Listener, index: number) => {
+        let _listener = this._listeners.find((listener: itembox.listeners.Listener, index: number) => {
             return listener._kind == itemKind;
         });
         if( _listener == undefined )
@@ -205,13 +219,6 @@ class ItemBox {
 
 
 
-class Listener {
-    _kind: number;
-    _handler: () => void;
-
-    constructor() {
-    }
-}
 
 
 /**
@@ -219,7 +226,7 @@ class Listener {
  */
 //% color="#FF8000"
 namespace Items {
-    let _listeners : Listener[] = [];
+    let _listeners : itembox.listeners.Listener[] = [];
 
 
     /**
@@ -250,7 +257,7 @@ namespace Items {
     //% block="on event $itemKind executed 2"
     //% itemKind.shadow="item_kind_enum_shim"
     export function onEvent(itemKind: number, handler: () => void) {
-        let listener = new Listener();
+        let listener = new itembox.listeners.Listener();
         listener._kind = itemKind;
         listener._handler = handler;
         _listeners.push(listener);
@@ -260,21 +267,4 @@ namespace Items {
 
 }
 
-// namespace direction {
-
-//     //% shim=ENUM_GET
-//     //% blockId=direction_enum_shim
-//     //% block="Item $arg"
-//     //% enumName="ItemKind"
-//     //% enumMemberName="itemKind"
-//     //% enumPromptHint="e.g. Green, Orange, ..."
-//     //% enumInitialMembers="Hammer, Wall, Ladder, Gun, Sword"
-//     export function _itemKindEnumShim(arg: number) {
-//         // This function should do nothing, but must take in a single
-//         // argument of type number and return a number value.
-//         return arg;
-//     }
-
-
-// }
 
