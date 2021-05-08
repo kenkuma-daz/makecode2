@@ -4,7 +4,8 @@
     "dependencies": {
         "device": "*",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
-        "Timers": "github:microsoft/arcade-timers#v1.1.0"
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "itembox": "github:kenkuma-daz/itembox#master"
     },
     "files": [
         "main.blocks",
@@ -15,7 +16,6 @@
         "tilemap.g.ts",
         "images.g.jres",
         "images.g.ts",
-        "itembox.ts",
         "creator.ts",
         "weapons.ts"
     ],
@@ -29,5 +29,5 @@
     "supportedTargets": [
         "arcade"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "blocksprj"
 }
