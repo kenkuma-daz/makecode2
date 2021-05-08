@@ -8,11 +8,6 @@ enum ItemKind {
 namespace SpriteKind {
     export const Items = SpriteKind.create()
 }
-function 剣更新 () {
-    if (剣振中) {
-        剣.setPosition(冒険者.x, 冒険者.y)
-    }
-}
 function モンスター作成 () {
     モンスター = sprites.create(img`
         . . f f f . . . . . . . . f f f 
@@ -55,7 +50,11 @@ function 道具箱生成 () {
     itemBox.add(ItemKind.Sword, assets.image`myImage`)
 }
 Items.onEvent(ItemKind.Sword, function () {
-    剣を振る()
+    if (冒険者の向き == "左") {
+        sword.wield(weapons.sword.Direction.Left)
+    } else if (冒険者の向き == "右") {
+        sword.wield(weapons.sword.Direction.Right)
+    }
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
@@ -92,50 +91,6 @@ Items.onEvent(ItemKind.Gun, function () {
         }
     }
 })
-function 剣を振る () {
-    if (剣振中) {
-        return
-    }
-    剣 = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, SpriteKind.Projectile)
-    剣振中 = true
-    剣.setPosition(冒険者.x, 冒険者.y)
-    if (冒険者の向き == "左") {
-        animation.runImageAnimation(
-        剣,
-        assets.animation`sword_left_anim`,
-        100,
-        false
-        )
-    } else if (冒険者の向き == "右") {
-        animation.runImageAnimation(
-        剣,
-        assets.animation`sword_right_anim`,
-        100,
-        false
-        )
-    }
-    timer.after(300, function () {
-        剣.destroy()
-        剣振中 = false
-    })
-}
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
@@ -357,9 +312,9 @@ let 弾丸: Sprite = null
 let 冒険者の向き = ""
 let itemBox: ItemBox = null
 let モンスター: Sprite = null
-let 剣: Sprite = null
-let 剣振中 = false
+let sword: weapons.sword.Sword = null
 let 冒険者: Sprite = null
+let 剣振中 = false
 道具箱生成()
 tiles.setTilemap(tilemap`level1`)
 scene.setBackgroundColor(9)
@@ -388,9 +343,9 @@ tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
 for (let index = 0; index < 3; index++) {
     モンスター作成()
 }
-剣振中 = false
+sword = weapons.factory.equipSword(冒険者)
+sword.setAnimation(assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
     冒険者.vy = キャラクタ移動(冒険者)
-    剣更新()
 })

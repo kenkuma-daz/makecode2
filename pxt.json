@@ -16,7 +16,8 @@
         "images.g.jres",
         "images.g.ts",
         "itembox.ts",
-        "creator.ts"
+        "creator.ts",
+        "weapons.ts"
     ],
     "testFiles": [
         "test.ts"
