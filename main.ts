@@ -8,6 +8,11 @@ enum ItemKind {
 namespace SpriteKind {
     export const Items = SpriteKind.create()
 }
+function 剣更新 () {
+    if (剣振中) {
+        剣.setPosition(冒険者.x, 冒険者.y)
+    }
+}
 function モンスター作成 () {
     モンスター = sprites.create(img`
         . . f f f . . . . . . . . f f f 
@@ -50,12 +55,8 @@ function 道具箱生成 () {
     itemBox.add(ItemKind.Sword, assets.image`myImage`)
 }
 Items.onEvent(ItemKind.Sword, function () {
-    剣を振る(冒険者の向き)
+    剣を振る()
 })
-function キャラクタ更新 (sprite: Sprite) {
-    キャラクタアニメーション(sprite)
-    sprite.vy = キャラクタ移動(sprite)
-}
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.next()
@@ -91,7 +92,7 @@ Items.onEvent(ItemKind.Gun, function () {
         }
     }
 })
-function 剣を振る (方向: string) {
+function 剣を振る () {
     if (剣振中) {
         return
     }
@@ -115,14 +116,14 @@ function 剣を振る (方向: string) {
         `, SpriteKind.Projectile)
     剣振中 = true
     剣.setPosition(冒険者.x, 冒険者.y)
-    if (方向 == "左") {
+    if (冒険者の向き == "左") {
         animation.runImageAnimation(
         剣,
         assets.animation`sword_left_anim`,
         100,
         false
         )
-    } else if (方向 == "右") {
+    } else if (冒険者の向き == "右") {
         animation.runImageAnimation(
         剣,
         assets.animation`sword_right_anim`,
@@ -352,11 +353,11 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
 })
-let 剣: Sprite = null
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
 let itemBox: ItemBox = null
 let モンスター: Sprite = null
+let 剣: Sprite = null
 let 剣振中 = false
 let 冒険者: Sprite = null
 道具箱生成()
@@ -389,8 +390,7 @@ for (let index = 0; index < 3; index++) {
 }
 剣振中 = false
 game.onUpdate(function () {
-    キャラクタ更新(冒険者)
-    if (剣振中) {
-        剣.setPosition(冒険者.x, 冒険者.y)
-    }
+    キャラクタアニメーション(冒険者)
+    冒険者.vy = キャラクタ移動(冒険者)
+    剣更新()
 })
