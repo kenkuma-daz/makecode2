@@ -106,23 +106,19 @@ itembox.util.onEvent(ItemKind.Wall, function () {
     }
 })
 function キャラクタ移動 (sprite: Sprite) {
-    if (sprite.isHittingTile(CollisionDirection.Bottom)) {
+    if (sprite.tileKindAt(TileDirection.Center, assets.tile`ハシゴタイル`)) {
+        if (controller.up.isPressed()) {
+            return -100
+        } else if (controller.down.isPressed()) {
+            return 100
+        }
+        return 0
+    } else if (sprite.isHittingTile(CollisionDirection.Bottom)) {
         if (controller.up.isPressed()) {
             return -200
         }
-    } else {
-        if (sprite.tileKindAt(TileDirection.Center, assets.tile`ハシゴタイル`)) {
-            if (controller.up.isPressed()) {
-                return -100
-            } else if (controller.down.isPressed()) {
-                return 100
-            } else {
-                return 0
-            }
-        } else if (!(controller.up.isPressed())) {
-            sprite.vy = 200
-            return 200
-        }
+    } else if (!(controller.up.isPressed())) {
+        return 200
     }
     return Math.min(sprite.vy + 8, 200)
 }
@@ -312,7 +308,6 @@ let itemBox: itembox.items.ItemBox = null
 let モンスター: Sprite = null
 let sword: weapons.sword.Sword = null
 let 冒険者: Sprite = null
-let 剣振中 = false
 道具箱生成()
 tiles.setTilemap(tilemap`level1`)
 scene.setBackgroundImage(img`
