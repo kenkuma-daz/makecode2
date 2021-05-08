@@ -1,7 +1,7 @@
 
 
 namespace SpriteKind {
-    export const ItemsFrame = SpriteKind.create()
+    export const ItemBox = SpriteKind.create()
 }
 
 function createItemFrame2(): Sprite {
@@ -22,7 +22,7 @@ function createItemFrame2(): Sprite {
         5 . . . . . . . . . . . . . . 5 
         5 . . . . . . . . . . . . . . 5 
         5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-        `, SpriteKind.ItemsFrame)
+        `, SpriteKind.ItemBox)
 }
 
 
@@ -77,7 +77,7 @@ function createItemFocus(): Sprite {
         3 3 . . . . . . . . . . . . 3 3 
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
         3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        `, SpriteKind.ItemsFrame)
+        `, SpriteKind.ItemBox)
 }
 
 
@@ -122,7 +122,7 @@ class ItemBox {
     //% itemKind.shadow="item_kind_enum_shim"
     //% img.shadow="screen_image_picker"
     add(itemKind:number, img: Image) {
-        let sprite = sprites.create(img, SpriteKind.ItemsFrame);
+        let sprite = sprites.create(img, SpriteKind.ItemBox);
         let item = new Item(itemKind, sprite);
         this._items.push(item);
 
