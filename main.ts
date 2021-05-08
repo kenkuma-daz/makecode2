@@ -90,12 +90,22 @@ Items.onEvent(ItemKind.Hammer, function () {
     }
 })
 Items.onEvent(ItemKind.Gun, function () {
-    if (controller.up.isPressed()) {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸0`, 冒険者, 0, -100)
-    } else if (冒険者の向き == "左") {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, -100, 0)
+    if (冒険者の向き == "左") {
+        if (controller.up.isPressed()) {
+            弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸1`, 冒険者, -80, -80)
+        } else if (controller.down.isPressed()) {
+            弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸2`, 冒険者, -80, 80)
+        } else {
+            弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, -100, 0)
+        }
     } else if (冒険者の向き == "右") {
-        弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, 100, 0)
+        if (controller.up.isPressed()) {
+            弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸2`, 冒険者, 80, -80)
+        } else if (controller.down.isPressed()) {
+            弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸1`, 冒険者, 80, 80)
+        } else {
+            弾丸 = sprites.createProjectileFromSprite(assets.image`弾丸`, 冒険者, 100, 0)
+        }
     }
 })
 function 剣を振る (sprite: Sprite, 方向: string) {
@@ -135,7 +145,7 @@ Items.onEvent(ItemKind.Wall, function () {
     }
 })
 function キャラクタ移動 (sprite: Sprite) {
-    if (キャラクタ壁接触(sprite, "下")) {
+    if (sprite.isHittingTile(CollisionDirection.Bottom)) {
         if (controller.up.isPressed()) {
             return -200
         }
@@ -328,18 +338,6 @@ function キャラクタアニメーション (sprite: Sprite) {
     } else {
     	
     }
-}
-function キャラクタ壁接触 (sprite: Sprite, 向き: string) {
-    if (sprite.isHittingTile(CollisionDirection.Left) && 向き == 冒険者の向き) {
-    	
-    } else if (sprite.isHittingTile(CollisionDirection.Right) && 向き == 冒険者の向き) {
-    	
-    } else if (sprite.isHittingTile(CollisionDirection.Bottom) && 向き == "下") {
-    	
-    } else {
-        return false
-    }
-    return true
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)

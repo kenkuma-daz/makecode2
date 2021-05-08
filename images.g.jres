@@ -29,6 +29,16 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "myImage0"
     },
+    "image7": {
+        "data": "hwQQABAAAAAAAAAAAAAAAPD/DwAAAAAA8MwPAAAAAADwzA8AAAAAAPD/DwAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAM/8AAAAAAAAz/wAAAAAAAD//wAAAAAAAAAAAAAAAAAAAADw/w8AAAAAAPDMDwAAAAAA8MwPAAAAAADw/w8AAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "弾丸1"
+    },
+    "image8": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAA8P8PAAAAAADwzA8AAAAAAPDMDwAAAAAA8P8PAAAAAAAAAAAAAAD//wAAAAAAAM/8AAAAAAAAz/wAAAAAAAD//wAAAAAAAAAAAAAA8P8PAAAAAADwzA8AAAAAAPDMDwAAAAAA8P8PAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "弾丸2"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",

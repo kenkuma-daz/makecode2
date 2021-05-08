@@ -10,7 +10,7 @@ namespace ext {
 
 }
 
-//% color="#FF8000"
+//% color="#FF8080"
 namespace creator {
     export enum Direction {
         TopLeft,
