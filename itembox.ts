@@ -221,6 +221,7 @@ class Listener {
 namespace Items {
     let _listeners : Listener[] = [];
 
+
     /**
      * Create a ItemBox and automtically set it to a variable
      */
@@ -258,3 +259,22 @@ namespace Items {
 
 
 }
+
+// namespace direction {
+
+//     //% shim=ENUM_GET
+//     //% blockId=direction_enum_shim
+//     //% block="Item $arg"
+//     //% enumName="ItemKind"
+//     //% enumMemberName="itemKind"
+//     //% enumPromptHint="e.g. Green, Orange, ..."
+//     //% enumInitialMembers="Hammer, Wall, Ladder, Gun, Sword"
+//     export function _itemKindEnumShim(arg: number) {
+//         // This function should do nothing, but must take in a single
+//         // argument of type number and return a number value.
+//         return arg;
+//     }
+
+
+// }
+
