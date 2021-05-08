@@ -63,7 +63,7 @@ namespace itembox.items {
     /**
      * Declare a class outside and attach to a namespace.
      */
-    //% blockNamespace=Items color="#FF8000"
+    //% blockNamespace=ItemBox color="#FF8000"
     export class Item {
         _kind: number;
         _sprite: Sprite;
@@ -92,13 +92,10 @@ namespace itembox.items {
         }
     }
 
-
-
-
     /**
      * Declare a class outside and attach to a namespace.
      */
-    //% blockNamespace=Items color="#FF8000"
+    //% blockNamespace=ItemBox color="#FF8000"
     export class ItemBox {
         _selected: number;
         _focus: Sprite;
@@ -224,10 +221,10 @@ namespace itembox.items {
 
 
 /**
- * Widget namespace using en external class
+ * ItemBox namespace using en external class
  */
-//% color="#FF8000"
-namespace Items {
+//% blockNamespace=ItemBox color="#FF8000"
+namespace itembox.util {
     let _listeners : itembox.listeners.Listener[] = [];
 
 
@@ -263,9 +260,7 @@ namespace Items {
         listener._kind = itemKind;
         listener._handler = handler;
         _listeners.push(listener);
-    }    
-
-
+    }
 
 }
 
