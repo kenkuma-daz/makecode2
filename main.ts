@@ -296,8 +296,6 @@ function キャラクタアニメーション (sprite: Sprite) {
             )
         }
         冒険者の向き = "右"
-    } else {
-    	
     }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -310,7 +308,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
-let itemBox: ItemBox = null
+let itemBox: itembox.items.ItemBox = null
 let モンスター: Sprite = null
 let sword: weapons.sword.Sword = null
 let 冒険者: Sprite = null
