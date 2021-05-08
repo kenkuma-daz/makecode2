@@ -8,10 +8,6 @@ enum ItemKind {
 namespace SpriteKind {
     export const Items = SpriteKind.create()
 }
-function タイル生成 (sprite: Sprite, x: number, y: number, tile: Image) {
-    tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), tile)
-    tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), false)
-}
 function モンスター作成 () {
     モンスター = sprites.create(img`
         . . f f f . . . . . . . . f f f 
@@ -84,13 +80,13 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 Items.onEvent(ItemKind.Hammer, function () {
     if (controller.up.isPressed()) {
-        壁タイル破壊(冒険者, 0, -1)
+        creator.putTile(冒険者, creator.Direction.TopCenter, myTiles.transparency16)
     } else if (controller.down.isPressed()) {
-        壁タイル破壊(冒険者, 0, 1)
+        creator.putTile(冒険者, creator.Direction.BottomCenter, myTiles.transparency16)
     } else if (冒険者の向き == "左") {
-        壁タイル破壊(冒険者, -1, 0)
+        creator.putTile(冒険者, creator.Direction.CenterLeft, myTiles.transparency16)
     } else if (冒険者の向き == "右") {
-        壁タイル破壊(冒険者, 1, 0)
+        creator.putTile(冒険者, creator.Direction.CenterRight, myTiles.transparency16)
     }
 })
 Items.onEvent(ItemKind.Gun, function () {
@@ -103,6 +99,8 @@ Items.onEvent(ItemKind.Gun, function () {
     }
 })
 function 剣を振る (sprite: Sprite, 方向: string) {
+    sprite.setPosition(冒険者.x, 冒険者.y)
+    sprite.follow(冒険者, 1000)
     if (方向 == "左") {
         animation.runImageAnimation(
         sprite,
@@ -118,28 +116,22 @@ function 剣を振る (sprite: Sprite, 方向: string) {
         false
         )
     }
-    sprite.setPosition(冒険者.x, 冒険者.y)
-    sprite.follow(冒険者, 1000)
     timer.after(300, function () {
         sprite.destroy()
     })
-}
-function 壁生成 (sprite: Sprite, x: number, y: number, tile: Image) {
-    tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), tile)
-    tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), true)
 }
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
 Items.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
-        壁生成(冒険者, 0, -1, assets.tile`壁タイル`)
+        creator.putTileWithWall(冒険者, creator.Direction.TopCenter, myTiles.tile1)
     } else if (controller.down.isPressed()) {
-        壁生成(冒険者, 0, 1, assets.tile`壁タイル`)
+        creator.putTileWithWall(冒険者, creator.Direction.BottomCenter, myTiles.tile1)
     } else if (冒険者の向き == "左") {
-        壁生成(冒険者, -1, 0, assets.tile`壁タイル`)
+        creator.putTileWithWall(冒険者, creator.Direction.CenterLeft, myTiles.tile1)
     } else if (冒険者の向き == "右") {
-        壁生成(冒険者, 1, 0, assets.tile`壁タイル`)
+        creator.putTileWithWall(冒険者, creator.Direction.CenterRight, myTiles.tile1)
     }
 })
 function キャラクタ移動 (sprite: Sprite) {
@@ -163,19 +155,15 @@ function キャラクタ移動 (sprite: Sprite) {
     }
     return Math.min(sprite.vy + 8, 200)
 }
-function 壁タイル破壊 (sprite: Sprite, x: number, y: number) {
-    tiles.setTileAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), assets.tile`transparency16`)
-    tiles.setWallAt(tiles.getTileLocation(sprite.x / 16 + x, sprite.y / 16 + y), false)
-}
 Items.onEvent(ItemKind.Ladder, function () {
     if (controller.up.isPressed()) {
-        タイル生成(冒険者, 0, -1, assets.tile`ハシゴタイル`)
+        creator.putTile(冒険者, creator.Direction.TopCenter, myTiles.tile2)
     } else if (controller.down.isPressed()) {
-        タイル生成(冒険者, 0, 1, assets.tile`ハシゴタイル`)
+        creator.putTile(冒険者, creator.Direction.BottomCenter, myTiles.tile2)
     } else if (冒険者の向き == "左") {
-        タイル生成(冒険者, -1, 0, assets.tile`ハシゴタイル`)
+        creator.putTile(冒険者, creator.Direction.CenterLeft, myTiles.tile2)
     } else if (冒険者の向き == "右") {
-        タイル生成(冒険者, 1, 0, assets.tile`ハシゴタイル`)
+        creator.putTile(冒険者, creator.Direction.CenterRight, myTiles.tile2)
     }
 })
 function キャラクタアニメーション (sprite: Sprite) {
