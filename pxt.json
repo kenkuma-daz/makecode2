@@ -5,7 +5,7 @@
         "device": "*",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
         "Timers": "github:microsoft/arcade-timers#v1.1.0",
-        "itembox": "github:kenkuma-daz/itembox#master"
+        "itembox": "github:kenkuma-daz/itembox#6fcabbc193e02f0bdeea6c4721a78158b451fbb9"
     },
     "files": [
         "main.blocks",
@@ -29,5 +29,5 @@
     "supportedTargets": [
         "arcade"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "blocksprj"
 }
