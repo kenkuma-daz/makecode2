@@ -457,8 +457,7 @@ tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
 for (let index = 0; index < 3; index++) {
     モンスター作成()
 }
-sword = weapons.factory.equipSword(冒険者)
-sword.setAnimation(assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
+sword = weapons.factory.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
     冒険者.vy = キャラクタ移動(冒険者)

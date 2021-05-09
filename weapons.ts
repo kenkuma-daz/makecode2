@@ -80,11 +80,13 @@ namespace weapons.sword {
 
 //% blockNamespace=Weapons color="#0080FF"
 namespace weapons.factory {
-    //% block="equip to $target"
+    //% block="equip to $target animation left=$leftAnim=animation_editor right=$rightAnim=animation_editor"
     //% blockSetVariable=sword
-    export function equipSword(target: Sprite): weapons.sword.Sword {
+    export function equipSword(target: Sprite, leftAnim: Image[], rightAnim: Image[]): weapons.sword.Sword {
         let sword = new weapons.sword.Sword(target);
+        sword.setAnimation(leftAnim, rightAnim);
         sword._run();
         return sword;
     }    
+
 }
