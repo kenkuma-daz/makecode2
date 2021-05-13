@@ -17,7 +17,8 @@
         "images.g.jres",
         "images.g.ts",
         "creator.ts",
-        "weapons.ts"
+        "weapons.ts",
+        "jumpable.ts"
     ],
     "testFiles": [
         "test.ts"
