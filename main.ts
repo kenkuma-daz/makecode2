@@ -36,9 +36,6 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     itemBox.action()
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`hummer`, function (sprite, location) {
-    itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
-})
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.prev()
@@ -46,10 +43,8 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function 道具箱生成 () {
     itemBox = itembox.util.createEmptyItemBox()
+    itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
     itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
-    itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
-    itemBox.add(ItemKind.Gun, assets.image`ハンドガン`)
-    itemBox.add(ItemKind.Sword, assets.tile`short_sword`)
 }
 itembox.util.onEvent(ItemKind.Sword, function () {
     if (冒険者の向き == "左") {
@@ -57,6 +52,10 @@ itembox.util.onEvent(ItemKind.Sword, function () {
     } else if (冒険者の向き == "右") {
         sword.wield(weapons.sword.Direction.Right)
     }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`hand_gun`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Gun, assets.tile`hand_gun`)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
@@ -93,6 +92,10 @@ itembox.util.onEvent(ItemKind.Gun, function () {
         }
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
+})
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
@@ -106,6 +109,10 @@ itembox.util.onEvent(ItemKind.Wall, function () {
     } else if (冒険者の向き == "右") {
         creator.putTileWithWall(冒険者, creator.Direction.CenterRight, myTiles.tile1)
     }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`short_sword`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Sword, assets.tile`short_sword`)
 })
 itembox.util.onEvent(ItemKind.Ladder, function () {
     if (controller.up.isPressed()) {
