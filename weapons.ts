@@ -41,7 +41,8 @@ namespace weapons.sword {
             this._sword = null;
         }
 
-        //% block="$this(sword) wield sword $direction"
+        //% block="wield $this(sword) for $direction"
+        //% group="Sword"
         wield(direction: Direction) {
             if( this._sword != null )
                 return;
@@ -64,6 +65,7 @@ namespace weapons.sword {
         }
 
         //% block="set animation left=$leftAnim=animation_editor right=$rightAnim=animation_editor to $this(sword)"
+        //% group="Sword"
         setAnimation(leftAnim: Image[], rightAnim: Image[]) {
             this._leftAnim = leftAnim;
             this._rightAnim = rightAnim;
@@ -76,17 +78,14 @@ namespace weapons.sword {
             });
         }
     }
-}
 
-//% blockNamespace=Weapons color="#0080FF"
-namespace weapons.factory {
-    //% block="equip to $target animation left=$leftAnim=animation_editor right=$rightAnim=animation_editor"
+    //% block="$target to equip sword and set animation left=$leftAnim=animation_editor right=$rightAnim=animation_editor"
     //% blockSetVariable=sword
+    //% group="Sword"
     export function equipSword(target: Sprite, leftAnim: Image[], rightAnim: Image[]): weapons.sword.Sword {
         let sword = new weapons.sword.Sword(target);
         sword.setAnimation(leftAnim, rightAnim);
         sword._run();
         return sword;
     }    
-
 }

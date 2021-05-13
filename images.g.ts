@@ -3,25 +3,6 @@ namespace myImages {
 
     helpers._registerFactory("image", function(name: string) {
         switch(helpers.stringTrim(name)) {
-            case "image1":
-            case "ハンマー":return img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . c c c . . . . . . 
-. . . . . . c c c c c . . . . . 
-. . . . . c c c c c c . . . . . 
-. . . . c c c c c c . . . . . . 
-. . . c c c c c c . . . . . . . 
-. . c c c c c c . . . . . . . . 
-. c c c c c c e e . . . . . . . 
-. c c c c c . c e e . . . . . . 
-. c c c c . . . c e e . . . . . 
-. . c c . . . . . c e e . . . . 
-. . . . . . . . . . c e e . . . 
-. . . . . . . . . . . c e e . . 
-. . . . . . . . . . . . c e e . 
-. . . . . . . . . . . . . e e . 
-. . . . . . . . . . . . . . . . 
-`;
             case "image2":
             case "ハンドガン":return img`
 . . . . . . . . . . . . . . . . 
@@ -77,25 +58,6 @@ namespace myImages {
 . . . . . . f c c f . . . . . . 
 . . . . . . f c c f . . . . . . 
 . . . . . . f f f f . . . . . . 
-. . . . . . . . . . . . . . . . 
-`;
-            case "image4":
-            case "myImage":return img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . b b b b . 
-. . . . . . . . . . b b b b b . 
-. . . . . . . . . b b b b b b . 
-. . . . . . . . b b b b b b b . 
-. . . . . . . b b b b b b b . . 
-. . c c . . b b b b b b b . . . 
-. . f c c b b b b b b b . . . . 
-. . . f c c b b b b b . . . . . 
-. . . . f c c b b b . . . . . . 
-. . . c c c c c b . . . . . . . 
-. . c c c c f c c . . . . . . . 
-. c c c c f . f c c . . . . . . 
-. c c c f . . . f c . . . . . . 
-. c c f . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `;
             case "image7":

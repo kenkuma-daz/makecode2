@@ -43,11 +43,8 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function 道具箱生成 () {
     itemBox = itembox.util.createEmptyItemBox()
-    itemBox.add(ItemKind.Hammer, assets.image`ハンマー`)
+    itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
     itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
-    itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
-    itemBox.add(ItemKind.Gun, assets.image`ハンドガン`)
-    itemBox.add(ItemKind.Sword, assets.image`myImage`)
 }
 itembox.util.onEvent(ItemKind.Sword, function () {
     if (冒険者の向き == "左") {
@@ -55,6 +52,10 @@ itembox.util.onEvent(ItemKind.Sword, function () {
     } else if (冒険者の向き == "右") {
         sword.wield(weapons.sword.Direction.Right)
     }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`hand_gun`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Gun, assets.tile`hand_gun`)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
@@ -91,6 +92,10 @@ itembox.util.onEvent(ItemKind.Gun, function () {
         }
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
+})
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
@@ -105,23 +110,10 @@ itembox.util.onEvent(ItemKind.Wall, function () {
         creator.putTileWithWall(冒険者, creator.Direction.CenterRight, myTiles.tile1)
     }
 })
-function キャラクタ移動 (sprite: Sprite) {
-    if (sprite.tileKindAt(TileDirection.Center, assets.tile`ハシゴタイル`)) {
-        if (controller.up.isPressed()) {
-            return -100
-        } else if (controller.down.isPressed()) {
-            return 100
-        }
-        return 0
-    } else if (sprite.isHittingTile(CollisionDirection.Bottom)) {
-        if (controller.up.isPressed()) {
-            return -200
-        }
-    } else if (!(controller.up.isPressed())) {
-        return 200
-    }
-    return Math.min(sprite.vy + 8, 200)
-}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`short_sword`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Sword, assets.tile`short_sword`)
+})
 itembox.util.onEvent(ItemKind.Ladder, function () {
     if (controller.up.isPressed()) {
         creator.putTile(冒険者, creator.Direction.TopCenter, myTiles.tile2)
@@ -457,8 +449,10 @@ tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
 for (let index = 0; index < 3; index++) {
     モンスター作成()
 }
-sword = weapons.factory.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
+sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
+let jumper = jumpable.setToBeJumpable(冒険者)
+jumper.canGrabTile(assets.tile`ハシゴタイル`)
+jumper.canGrabTile(assets.tile`tree1`)
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
-    冒険者.vy = キャラクタ移動(冒険者)
 })

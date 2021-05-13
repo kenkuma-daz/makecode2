@@ -5,7 +5,7 @@
         "device": "*",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
         "Timers": "github:microsoft/arcade-timers#v1.1.0",
-        "itembox": "github:kenkuma-daz/itembox#6fcabbc193e02f0bdeea6c4721a78158b451fbb9"
+        "itembox": "github:kenkuma-daz/itembox#a83733f03752af87a8c1ae13f77e64ece47d641b"
     },
     "files": [
         "main.blocks",
@@ -17,7 +17,8 @@
         "images.g.jres",
         "images.g.ts",
         "creator.ts",
-        "weapons.ts"
+        "weapons.ts",
+        "jumpable.ts"
     ],
     "testFiles": [
         "test.ts"
