@@ -105,23 +105,6 @@ itembox.util.onEvent(ItemKind.Wall, function () {
         creator.putTileWithWall(冒険者, creator.Direction.CenterRight, myTiles.tile1)
     }
 })
-function キャラクタ移動 (sprite: Sprite) {
-    if (sprite.tileKindAt(TileDirection.Center, assets.tile`ハシゴタイル`)) {
-        if (controller.up.isPressed()) {
-            return -100
-        } else if (controller.down.isPressed()) {
-            return 100
-        }
-        return 0
-    } else if (sprite.isHittingTile(CollisionDirection.Bottom)) {
-        if (controller.up.isPressed()) {
-            return -200
-        }
-    } else if (!(controller.up.isPressed())) {
-        return 200
-    }
-    return Math.min(sprite.vy + 8, 200)
-}
 itembox.util.onEvent(ItemKind.Ladder, function () {
     if (controller.up.isPressed()) {
         creator.putTile(冒険者, creator.Direction.TopCenter, myTiles.tile2)
@@ -457,8 +440,75 @@ tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
 for (let index = 0; index < 3; index++) {
     モンスター作成()
 }
-sword = weapons.factory.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
+sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
+namespace jumpable {
+
+    export class Jumpable {
+
+        _target: Sprite;
+        _grabbableTiles: Image[];
+
+        constructor(target: Sprite) {
+            this._target = target;
+            this._grabbableTiles = [];
+        }
+
+        //% block="$this(jumper) can grab $tile"
+        //% tile.shadow="screen_image_picker"
+        canGrabTile(tile: Image) {
+            this._grabbableTiles.push(tile);
+        }
+
+        _isOnTile(tile: Image) : boolean {
+            let found = this._grabbableTiles.find((grabbableTile) => {
+                return grabbableTile.equals(tile);
+            });
+            if( found == undefined || found == null)
+                return false;
+            return true;
+        }
+
+        _calcPosition() : number {
+            let loc = tiles.getTileLocation(this._target.x / 16, this._target.y / 16);
+
+            let tile = tiles.getTileImage(loc);
+            // let tile = tiles.getTileAt(0, 0);
+            // if (this._target.tileKindAt(TileDirection.Center, assets.tile`ハシゴタイル`)) {
+            if( this._isOnTile(tile) ) {
+                if (controller.up.isPressed()) {
+                    return -100
+                } else if (controller.down.isPressed()) {
+                    return 100
+                }
+                return 0
+            } else if (this._target.isHittingTile(CollisionDirection.Bottom)) {
+                if (controller.up.isPressed()) {
+                    return -200
+                }
+            } else if (!(controller.up.isPressed())) {
+                return 200
+            }
+            return Math.min(this._target.vy + 8, 200)
+        }
+
+        _run() {
+            game.onUpdate(() => {
+                this._target.vy = this._calcPosition();
+            });
+        }
+    }
+
+    //% block="$target to be jumpable"
+    //% blockSetVariable=jumper
+    export function setToBeJumpable(target: Sprite): jumpable.Jumpable {
+        let instance = new jumpable.Jumpable(target);
+        instance._run();
+        return instance;
+    }    
+}
+let jumper = jumpable.setToBeJumpable(冒険者)
+jumper.canGrabTile(assets.tile`ハシゴタイル`)
+jumper.canGrabTile(assets.tile`tree1`)
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
-    冒険者.vy = キャラクタ移動(冒険者)
 })
