@@ -36,6 +36,9 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     itemBox.action()
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`hummer`, function (sprite, location) {
+    itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
+})
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.prev()
@@ -43,11 +46,10 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function 道具箱生成 () {
     itemBox = itembox.util.createEmptyItemBox()
-    itemBox.add(ItemKind.Hammer, assets.image`ハンマー`)
     itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
     itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
     itemBox.add(ItemKind.Gun, assets.image`ハンドガン`)
-    itemBox.add(ItemKind.Sword, assets.image`myImage`)
+    itemBox.add(ItemKind.Sword, assets.tile`short_sword`)
 }
 itembox.util.onEvent(ItemKind.Sword, function () {
     if (冒険者の向き == "左") {
