@@ -5,16 +5,24 @@ namespace jumpable {
 
         _target: Sprite;
         _grabbableTiles: Image[];
+        _speed: number;
 
         constructor(target: Sprite) {
             this._target = target;
             this._grabbableTiles = [];
+            this._speed = 200;
         }
 
         //% block="$this(jumper) can grab $tile"
         //% tile.shadow="screen_image_picker"
         canGrabTile(tile: Image) {
             this._grabbableTiles.push(tile);
+        }
+
+
+        //% block="jump $speed of $this(jumper)"
+        setSpeed(speed: number) {
+            this._speed = Math.abs(speed);
         }
 
         _isOnTile() : boolean {
@@ -41,14 +49,14 @@ namespace jumpable {
             
             let canJump = this._target.isHittingTile(CollisionDirection.Bottom);
             if (canJump && controller.up.isPressed()) {
-                return -200
+                return this._speed * -1;
             }
             
             if (!(controller.up.isPressed())) {
-                return 200
+                return this._speed;
             }
 
-            return Math.min(this._target.vy + 8, 200)
+            return Math.min(this._target.vy + 8, this._speed)
         }
 
         _run() {

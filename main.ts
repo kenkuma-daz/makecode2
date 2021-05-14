@@ -3,7 +3,8 @@ enum ItemKind {
     Wall,
     Ladder,
     Gun,
-    Sword
+    Sword,
+    JumpBoots
 }
 namespace SpriteKind {
     export const Items = SpriteKind.create()
@@ -39,6 +40,10 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`brick`, function (sprite, loc
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     itemBox.action()
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`jump_boots`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.JumpBoots, assets.tile`jump_boots`)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
@@ -97,6 +102,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, lo
 })
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
+})
+itembox.util.onEvent(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
 })
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
@@ -297,6 +305,7 @@ let 弾丸: Sprite = null
 let 冒険者の向き = ""
 let モンスター: Sprite = null
 let itemBox: itembox.items.ItemBox = null
+let jumper: jumpable.Jumpable = null
 let sword: weapons.sword.Sword = null
 let 冒険者: Sprite = null
 tiles.setTilemap(tilemap`level1`)
@@ -442,7 +451,7 @@ scene.setBackgroundImage(img`
     `, SpriteKind.Player)
 controller.moveSprite(冒険者, 100, 0)
 sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
-let jumper = jumpable.setToBeJumpable(冒険者)
+jumper = jumpable.setToBeJumpable(冒険者)
 jumper.canGrabTile(assets.tile`ハシゴタイル`)
 jumper.canGrabTile(assets.tile`tree1`)
 itemBox = itembox.util.createEmptyItemBox()
