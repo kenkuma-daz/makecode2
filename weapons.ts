@@ -21,7 +21,7 @@ function _createEmptySprite_16x16(): Sprite {
         `, SpriteKind.Projectile)
 }
 
-//% blockNamespace=Weapons color="#FF8000"
+//% blockNamespace=Weapons color="#FF6060"
 namespace weapons.sword {
     export enum Direction {
         Left,

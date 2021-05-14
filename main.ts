@@ -33,6 +33,10 @@ function モンスター作成 () {
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(冒険者, 0, 0)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`brick`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     itemBox.action()
 })
@@ -41,11 +45,6 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         itemBox.prev()
     }
 })
-function 道具箱生成 () {
-    itemBox = itembox.util.createEmptyItemBox()
-    itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
-    itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
-}
 itembox.util.onEvent(ItemKind.Sword, function () {
     if (冒険者の向き == "左") {
         sword.wield(weapons.sword.Direction.Left)
@@ -296,11 +295,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
-let itemBox: itembox.items.ItemBox = null
 let モンスター: Sprite = null
+let itemBox: itembox.items.ItemBox = null
 let sword: weapons.sword.Sword = null
 let 冒険者: Sprite = null
-道具箱生成()
 tiles.setTilemap(tilemap`level1`)
 scene.setBackgroundImage(img`
     7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -442,17 +440,19 @@ scene.setBackgroundImage(img`
     . . . . . f f f f f f . . . . . 
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
-info.setLife(8)
 controller.moveSprite(冒険者, 100, 0)
-scene.cameraFollowSprite(冒険者)
-tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
-for (let index = 0; index < 3; index++) {
-    モンスター作成()
-}
 sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
 let jumper = jumpable.setToBeJumpable(冒険者)
 jumper.canGrabTile(assets.tile`ハシゴタイル`)
 jumper.canGrabTile(assets.tile`tree1`)
+itemBox = itembox.util.createEmptyItemBox()
+itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
+scene.cameraFollowSprite(冒険者)
+tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
+info.setLife(8)
+for (let index = 0; index < 3; index++) {
+    モンスター作成()
+}
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
 })
