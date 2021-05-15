@@ -103,6 +103,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, lo
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
+itembox.util.onFocus(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
+})
 itembox.util.onEvent(ItemKind.JumpBoots, function () {
     jumper.setSpeed(400)
 })
@@ -293,6 +296,9 @@ function キャラクタアニメーション (sprite: Sprite) {
         冒険者の向き = "右"
     }
 }
+itembox.util.onBlur(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(200)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
     モンスター作成()
