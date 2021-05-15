@@ -3,7 +3,8 @@ enum ItemKind {
     Wall,
     Ladder,
     Gun,
-    Sword
+    Sword,
+    JumpBoots
 }
 namespace SpriteKind {
     export const Items = SpriteKind.create()
@@ -33,19 +34,22 @@ function モンスター作成 () {
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(冒険者, 0, 0)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`brick`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     itemBox.action()
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`jump_boots`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.JumpBoots, assets.tile`jump_boots`)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.prev()
     }
 })
-function 道具箱生成 () {
-    itemBox = itembox.util.createEmptyItemBox()
-    itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
-    itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
-}
 itembox.util.onEvent(ItemKind.Sword, function () {
     if (冒険者の向き == "左") {
         sword.wield(weapons.sword.Direction.Left)
@@ -98,6 +102,12 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, lo
 })
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
+})
+itembox.util.onFocus(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
+})
+itembox.util.onEvent(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
 })
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
@@ -286,6 +296,9 @@ function キャラクタアニメーション (sprite: Sprite) {
         冒険者の向き = "右"
     }
 }
+itembox.util.onBlur(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(200)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
     モンスター作成()
@@ -296,11 +309,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
-let itemBox: itembox.items.ItemBox = null
 let モンスター: Sprite = null
+let itemBox: itembox.items.ItemBox = null
+let jumper: jumpable.Jumpable = null
 let sword: weapons.sword.Sword = null
 let 冒険者: Sprite = null
-道具箱生成()
 tiles.setTilemap(tilemap`level1`)
 scene.setBackgroundImage(img`
     7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -442,17 +455,19 @@ scene.setBackgroundImage(img`
     . . . . . f f f f f f . . . . . 
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
-info.setLife(8)
 controller.moveSprite(冒険者, 100, 0)
+sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
+jumper = jumpable.setToBeJumpable(冒険者)
+jumper.canGrabTile(assets.tile`ハシゴタイル`)
+jumper.canGrabTile(assets.tile`tree1`)
+itemBox = itembox.util.createEmptyItemBox()
+itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
 scene.cameraFollowSprite(冒険者)
 tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
+info.setLife(8)
 for (let index = 0; index < 3; index++) {
     モンスター作成()
 }
-sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
-let jumper = jumpable.setToBeJumpable(冒険者)
-jumper.canGrabTile(assets.tile`ハシゴタイル`)
-jumper.canGrabTile(assets.tile`tree1`)
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
 })

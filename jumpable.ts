@@ -1,14 +1,16 @@
-//% blockNamespace=Jumpable color="#FF8000"
+//% blockNamespace=Jumpable color="#40B080"
 namespace jumpable {
 
     export class Jumpable {
 
         _target: Sprite;
         _grabbableTiles: Image[];
+        _speed: number;
 
         constructor(target: Sprite) {
             this._target = target;
             this._grabbableTiles = [];
+            this._speed = 200;
         }
 
         //% block="$this(jumper) can grab $tile"
@@ -17,7 +19,16 @@ namespace jumpable {
             this._grabbableTiles.push(tile);
         }
 
-        _isOnTile(tile: Image) : boolean {
+
+        //% block="jump $speed of $this(jumper)"
+        setSpeed(speed: number) {
+            this._speed = Math.abs(speed);
+        }
+
+        _isOnTile() : boolean {
+            let loc = tiles.getTileLocation(this._target.x / 16, this._target.y / 16);
+            let tile = tiles.getTileImage(loc);
+
             let found = this._grabbableTiles.find((grabbableTile) => {
                 return grabbableTile.equals(tile);
             });
@@ -27,26 +38,25 @@ namespace jumpable {
         }
 
         _calcPosition() : number {
-            let loc = tiles.getTileLocation(this._target.x / 16, this._target.y / 16);
-
-            let tile = tiles.getTileImage(loc);
-            // let tile = tiles.getTileAt(0, 0);
-            // if (this._target.tileKindAt(TileDirection.Center, assets.tile`ハシゴタイル`)) {
-            if( this._isOnTile(tile) ) {
+            if( this._isOnTile() ) {
                 if (controller.up.isPressed()) {
                     return -100
                 } else if (controller.down.isPressed()) {
                     return 100
                 }
                 return 0
-            } else if (this._target.isHittingTile(CollisionDirection.Bottom)) {
-                if (controller.up.isPressed()) {
-                    return -200
-                }
-            } else if (!(controller.up.isPressed())) {
-                return 200
             }
-            return Math.min(this._target.vy + 8, 200)
+            
+            let canJump = this._target.isHittingTile(CollisionDirection.Bottom);
+            if (canJump && controller.up.isPressed()) {
+                return this._speed * -1;
+            }
+            
+            if (!(controller.up.isPressed())) {
+                return this._speed;
+            }
+
+            return Math.min(this._target.vy + 8, this._speed)
         }
 
         _run() {

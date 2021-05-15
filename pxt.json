@@ -4,8 +4,7 @@
     "dependencies": {
         "device": "*",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
-        "Timers": "github:microsoft/arcade-timers#v1.1.0",
-        "itembox": "github:kenkuma-daz/itembox#a83733f03752af87a8c1ae13f77e64ece47d641b"
+        "Timers": "github:microsoft/arcade-timers#v1.1.0"
     },
     "files": [
         "main.blocks",
@@ -18,7 +17,8 @@
         "images.g.ts",
         "creator.ts",
         "weapons.ts",
-        "jumpable.ts"
+        "jumpable.ts",
+        "item_box.ts"
     ],
     "testFiles": [
         "test.ts"
