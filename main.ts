@@ -57,6 +57,15 @@ itembox.util.onEvent(ItemKind.Sword, function () {
         sword.wield(weapons.sword.Direction.Right)
     }
 })
+scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
+    if (sprites.readDataString(sprite, "タイプ") == "蛇") {
+        if (sprite.isHittingTile(CollisionDirection.Left)) {
+            sprite.vx = 20
+        } else if (sprite.isHittingTile(CollisionDirection.Right)) {
+            sprite.vx = -20
+        }
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`hand_gun`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Gun, assets.tile`hand_gun`)
@@ -96,12 +105,24 @@ itembox.util.onEvent(ItemKind.Gun, function () {
         }
     }
 })
+function 蛇生成 () {
+    蛇 = sprites.create(assets.image`snake_left`, SpriteKind.Enemy)
+    sprites.setDataString(蛇, "タイプ", "蛇")
+    蛇.setPosition(randint(0, 1600), randint(0, 10))
+    蛇.vy += 200
+    蛇.vx = -20
+}
 scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
 })
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
+})
+scene.onOverlapTile(SpriteKind.Enemy, assets.tile`transparency16`, function (sprite, location) {
+    if (sprites.readDataString(sprite, "タイプ") == "蛇") {
+        sprite.vy = 200
+    }
 })
 itembox.util.onFocus(ItemKind.JumpBoots, function () {
     jumper.setSpeed(400)
@@ -301,12 +322,17 @@ itembox.util.onBlur(ItemKind.JumpBoots, function () {
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
-    モンスター作成()
+    if (sprites.readDataString(otherSprite, "タイプ") == "蛇") {
+        蛇生成()
+    } else {
+        モンスター作成()
+    }
     info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
 })
+let 蛇: Sprite = null
 let 弾丸: Sprite = null
 let 冒険者の向き = ""
 let モンスター: Sprite = null
@@ -467,6 +493,9 @@ tiles.placeOnTile(冒険者, tiles.getTileLocation(2, 8))
 info.setLife(8)
 for (let index = 0; index < 3; index++) {
     モンスター作成()
+}
+for (let index = 0; index < 10; index++) {
+    蛇生成()
 }
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
