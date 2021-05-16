@@ -6,7 +6,8 @@
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
         "Timers": "github:microsoft/arcade-timers#v1.1.0",
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.1.0",
-        "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0"
+        "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0",
+        "itembox": "github:kenkuma-daz/itembox#master"
     },
     "files": [
         "main.blocks",
@@ -19,8 +20,7 @@
         "images.g.ts",
         "creator.ts",
         "weapons.ts",
-        "jumpable.ts",
-        "item_box.ts"
+        "jumpable.ts"
     ],
     "testFiles": [
         "test.ts"
@@ -32,5 +32,5 @@
     "supportedTargets": [
         "arcade"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "blocksprj"
 }

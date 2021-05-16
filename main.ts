@@ -127,9 +127,6 @@ scene.onOverlapTile(SpriteKind.Enemy, assets.tile`transparency16`, function (spr
 itembox.util.onFocus(ItemKind.JumpBoots, function () {
     jumper.setSpeed(400)
 })
-itembox.util.onEvent(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(400)
-})
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
         creator.putTileWithWall(冒険者, creator.Direction.TopCenter, myTiles.tile1)
