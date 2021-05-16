@@ -201,7 +201,7 @@ namespace itembox.items {
             let itemCenter = (this._items.length * iconSize) / 2.0;
             let start = center - itemCenter;
             let pos = {
-                x: index * iconSize + start,
+                x: index * iconSize + start + iconSize * 0.5,
                 y: scene.screenHeight() - iconSize
             }
 
