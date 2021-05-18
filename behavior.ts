@@ -14,12 +14,25 @@ namespace behavior {
     //% block="set $gravity gravity of $sprite=variables_get(aEnemy)"
     export function setGravity(sprite: Sprite, gravity: Gravity) {
         sprites.setDataNumber(sprite, "gravity", gravity);
+        if( gravity == Gravity.Bottom ) {
+            sprites.setDataNumber(sprite, "vy", 200);
+        }
     }
 
     game.onUpdate(function () {
         for (let target of sprites.allOfKind(SpriteKind.Enemy)) {
             if (sprites.readDataNumber(target, "gravity") == Gravity.Bottom) {
-                target.vy = 200
+                let vy = sprites.readDataNumber(target, "vy");
+                vy = Math.min(vy+8, 200);
+                sprites.setDataNumber(target, "vy", vy);
+                target.vy = vy;
+            }
+
+            if (sprites.readDataNumber(target, "pattern") == Pattern.Jump) {
+                if (target.isHittingTile(CollisionDirection.Bottom)) {
+                    target.vx = -200;
+                    sprites.setDataNumber(target, "vy", -200);
+                }
             }
         }
     })
@@ -33,15 +46,19 @@ namespace behavior {
         let kind = sprite.kind();
 
         scene.onHitWall(kind, (target, location) => {
-            if (sprites.readDataNumber(target, "pattern") == Pattern.TurnWhenHitWall) {
-                if (target.isHittingTile(CollisionDirection.Left)) {
+            let pattern = sprites.readDataNumber(target, "pattern");
+            switch(pattern) {
+            case Pattern.TurnWhenHitWall:
+                if (target.isHittingTile(CollisionDirection.Left))
                     target.vx = 20
-                } else if (target.isHittingTile(CollisionDirection.Right)) {
+                else if (target.isHittingTile(CollisionDirection.Right))
                     target.vx = -20
-                }
+                break;
             }
         });
     }
+
+
 
     // export class Jumpable {
 

@@ -63,7 +63,8 @@ function モンスター生成 () {
         . . . c c c c c c c c b b . . . 
         `, SpriteKind.Enemy)
     tiles.placeOnTile(モンスター, tiles.getTileLocation(2, 8))
-    behavior.setPattern(モンスター, behavior.Pattern.TurnWhenHitWall)
+    behavior.setGravity(モンスター, behavior.Gravity.Bottom)
+    behavior.setPattern(モンスター, behavior.Pattern.Jump)
 }
 itembox.util.onEvent(ItemKind.Door, function () {
     if (冒険者の向き == "左") {
