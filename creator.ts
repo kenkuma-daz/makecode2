@@ -1,14 +1,14 @@
 
 
-namespace ext {
-    //% block
-    //% blockNamespace=sprites 
-    //% group="ext"
-    export function hoge() {
+// namespace ext {
+//     //% block
+//     //% blockNamespace=sprites 
+//     //% group="ext"
+//     export function hoge() {
 
-    }
+//     }
 
-}
+// }
 
 //% color="#FF8080"
 namespace creator {

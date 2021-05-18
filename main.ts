@@ -78,9 +78,6 @@ itembox.util.onEvent(ItemKind.Sword, function () {
         sword.wield(weapons.sword.Direction.Right)
     }
 })
-itembox.util.onFocus(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(400)
-})
 scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
     if (sprites.readDataString(sprite, "タイプ") == "蛇") {
         if (sprite.isHittingTile(CollisionDirection.Left)) {
@@ -147,8 +144,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, lo
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
-itembox.util.onBlur(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(200)
+itembox.util.onFocus(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
 })
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
@@ -337,6 +334,9 @@ function キャラクタアニメーション (sprite: Sprite) {
         冒険者の向き = "右"
     }
 }
+itembox.util.onBlur(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(200)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
     if (sprites.readDataString(otherSprite, "タイプ") == "蛇") {
@@ -514,13 +514,33 @@ for (let index = 0; index < 3; index++) {
 for (let index = 0; index < 10; index++) {
     蛇生成()
 }
-game.onUpdate(function () {
-    キャラクタアニメーション(冒険者)
-})
+モンスター = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . b 5 5 b . . . 
+    . . . . . . b b b b b b . . . . 
+    . . . . . b b 5 5 5 5 5 b . . . 
+    . b b b b b 5 5 5 5 5 5 5 b . . 
+    . b d 5 b 5 5 5 5 5 5 5 5 b . . 
+    . . b 5 5 b 5 d 1 f 5 d 4 f . . 
+    . . b d 5 5 b 1 f f 5 4 4 c . . 
+    b b d b 5 5 5 d f b 4 4 4 4 b . 
+    b d d c d 5 5 b 5 4 4 4 4 4 4 b 
+    c d d d c c b 5 5 5 5 5 5 5 b . 
+    c b d d d d d 5 5 5 5 5 5 5 b . 
+    . c d d d d d d 5 5 5 5 5 d b . 
+    . . c b d d d d d 5 5 5 b b . . 
+    . . . c c c c c c c c b b . . . 
+    `, SpriteKind.Enemy)
+tiles.placeOnTile(モンスター, tiles.getTileLocation(2, 8))
+behavior.putTileWithWall(モンスター, behavior.Pattern.TurnWhenHitWall)
 game.onUpdate(function () {
     for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
         if (sprites.readDataString(value, "タイプ") == "蛇") {
             value.vy = 200
         }
     }
+})
+game.onUpdate(function () {
+    キャラクタアニメーション(冒険者)
 })

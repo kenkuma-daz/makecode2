@@ -20,7 +20,8 @@
         "images.g.ts",
         "creator.ts",
         "weapons.ts",
-        "jumpable.ts"
+        "jumpable.ts",
+        "behavior.ts"
     ],
     "testFiles": [
         "test.ts"
