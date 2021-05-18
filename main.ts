@@ -77,6 +77,9 @@ itembox.util.onEvent(ItemKind.Sword, function () {
         sword.wield(weapons.sword.Direction.Right)
     }
 })
+itembox.util.onFocus(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
+})
 scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
     if (sprites.readDataString(sprite, "タイプ") == "蛇") {
         if (sprite.isHittingTile(CollisionDirection.Left)) {
@@ -144,8 +147,8 @@ scene.onOverlapTile(SpriteKind.Enemy, assets.tile`transparency16`, function (spr
         sprite.vy = 200
     }
 })
-itembox.util.onFocus(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(400)
+itembox.util.onBlur(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(200)
 })
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
@@ -334,9 +337,6 @@ function キャラクタアニメーション (sprite: Sprite) {
         冒険者の向き = "右"
     }
 }
-itembox.util.onBlur(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(200)
-})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
     if (sprites.readDataString(otherSprite, "タイプ") == "蛇") {
