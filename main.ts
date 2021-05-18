@@ -10,28 +10,6 @@ enum ItemKind {
 namespace SpriteKind {
     export const Items = SpriteKind.create()
 }
-function モンスター作成 () {
-    モンスター = sprites.create(img`
-        . . f f f . . . . . . . . f f f 
-        . f f c c . . . . . . f c b b c 
-        f f c c . . . . . . f c b b c . 
-        f c f c . . . . . . f b c c c . 
-        f f f c c . c c . f c b b c c . 
-        f f c 3 c c 3 c c f b c b b c . 
-        f f b 3 b c 3 b c f b c c b c . 
-        . c b b b b b b c b b c c c . . 
-        . c 1 b b b 1 b b c c c c . . . 
-        c b b b b b b b b b c c . . . . 
-        c b c b b b c b b b b f . . . . 
-        f b 1 f f f 1 b b b b f c . . . 
-        f b b b b b b b b b b f c c . . 
-        . f b b b b b b b b c f . . . . 
-        . . f b b b b b b c f . . . . . 
-        . . . f f f f f f f . . . . . . 
-        `, SpriteKind.Enemy)
-    モンスター.setPosition(randint(0, 1600), randint(0, 10))
-    モンスター.follow(冒険者, 20)
-}
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(冒険者, 0, 0)
 })
@@ -59,6 +37,34 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`jump_boots`, function (sprite
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.JumpBoots, assets.tile`jump_boots`)
 })
+function モンスター生成 () {
+    for (let index = 0; index < 3; index++) {
+        コウモリ生成()
+    }
+    for (let index = 0; index < 10; index++) {
+        蛇生成()
+    }
+    モンスター = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . b 5 5 b . . . 
+        . . . . . . b b b b b b . . . . 
+        . . . . . b b 5 5 5 5 5 b . . . 
+        . b b b b b 5 5 5 5 5 5 5 b . . 
+        . b d 5 b 5 5 5 5 5 5 5 5 b . . 
+        . . b 5 5 b 5 d 1 f 5 d 4 f . . 
+        . . b d 5 5 b 1 f f 5 4 4 c . . 
+        b b d b 5 5 5 d f b 4 4 4 4 b . 
+        b d d c d 5 5 b 5 4 4 4 4 4 4 b 
+        c d d d c c b 5 5 5 5 5 5 5 b . 
+        c b d d d d d 5 5 5 5 5 5 5 b . 
+        . c d d d d d d 5 5 5 5 5 d b . 
+        . . c b d d d d d 5 5 5 b b . . 
+        . . . c c c c c c c c b b . . . 
+        `, SpriteKind.Enemy)
+    tiles.placeOnTile(モンスター, tiles.getTileLocation(2, 8))
+    behavior.setPattern(モンスター, behavior.Pattern.TurnWhenHitWall)
+}
 itembox.util.onEvent(ItemKind.Door, function () {
     if (冒険者の向き == "左") {
         creator.putTile(冒険者, creator.Direction.CenterLeft, myTiles.tile11)
@@ -122,7 +128,7 @@ function 蛇生成 () {
     sprites.setDataString(蛇, "タイプ", "蛇")
     蛇.setPosition(randint(0, 1600), randint(0, 10))
     behavior.setPattern(蛇, behavior.Pattern.TurnWhenHitWall)
-    蛇.vy += 200
+    behavior.setGravity(蛇, behavior.Gravity.Bottom)
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
@@ -132,6 +138,28 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, lo
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
 })
+function コウモリ生成 () {
+    モンスター = sprites.create(img`
+        . . f f f . . . . . . . . f f f 
+        . f f c c . . . . . . f c b b c 
+        f f c c . . . . . . f c b b c . 
+        f c f c . . . . . . f b c c c . 
+        f f f c c . c c . f c b b c c . 
+        f f c 3 c c 3 c c f b c b b c . 
+        f f b 3 b c 3 b c f b c c b c . 
+        . c b b b b b b c b b c c c . . 
+        . c 1 b b b 1 b b c c c c . . . 
+        c b b b b b b b b b c c . . . . 
+        c b c b b b c b b b b f . . . . 
+        f b 1 f f f 1 b b b b f c . . . 
+        f b b b b b b b b b b f c c . . 
+        . f b b b b b b b b c f . . . . 
+        . . f b b b b b b c f . . . . . 
+        . . . f f f f f f f . . . . . . 
+        `, SpriteKind.Enemy)
+    モンスター.setPosition(randint(0, 1600), randint(0, 10))
+    モンスター.follow(冒険者, 20)
+}
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
@@ -333,7 +361,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     if (sprites.readDataString(otherSprite, "タイプ") == "蛇") {
         蛇生成()
     } else {
-        モンスター作成()
+        コウモリ生成()
     }
     info.changeScoreBy(1)
 })
@@ -342,8 +370,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let 蛇: Sprite = null
 let 弾丸: Sprite = null
-let 冒険者の向き = ""
 let モンスター: Sprite = null
+let 冒険者の向き = ""
 let itemBox: itembox.items.ItemBox = null
 let jumper: jumpable.Jumpable = null
 let sword: weapons.sword.Sword = null
@@ -499,39 +527,7 @@ itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
 scene.cameraFollowSprite(冒険者)
 tiles.placeOnTile(冒険者, tiles.getTileLocation(7, 8))
 info.setLife(8)
-for (let index = 0; index < 3; index++) {
-    モンスター作成()
-}
-for (let index = 0; index < 10; index++) {
-    蛇生成()
-}
-モンスター = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . b 5 5 b . . . 
-    . . . . . . b b b b b b . . . . 
-    . . . . . b b 5 5 5 5 5 b . . . 
-    . b b b b b 5 5 5 5 5 5 5 b . . 
-    . b d 5 b 5 5 5 5 5 5 5 5 b . . 
-    . . b 5 5 b 5 d 1 f 5 d 4 f . . 
-    . . b d 5 5 b 1 f f 5 4 4 c . . 
-    b b d b 5 5 5 d f b 4 4 4 4 b . 
-    b d d c d 5 5 b 5 4 4 4 4 4 4 b 
-    c d d d c c b 5 5 5 5 5 5 5 b . 
-    c b d d d d d 5 5 5 5 5 5 5 b . 
-    . c d d d d d d 5 5 5 5 5 d b . 
-    . . c b d d d d d 5 5 5 b b . . 
-    . . . c c c c c c c c b b . . . 
-    `, SpriteKind.Enemy)
-tiles.placeOnTile(モンスター, tiles.getTileLocation(2, 8))
-behavior.setPattern(モンスター, behavior.Pattern.TurnWhenHitWall)
-game.onUpdate(function () {
-    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
-        if (sprites.readDataString(value, "タイプ") == "蛇") {
-            value.vy = 200
-        }
-    }
-})
+モンスター生成()
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
 })

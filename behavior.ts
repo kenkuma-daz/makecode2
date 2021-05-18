@@ -11,8 +11,20 @@ namespace behavior {
         Jump
     }
 
+    //% block="set $gravity gravity of $sprite=variables_get(aEnemy)"
+    export function setGravity(sprite: Sprite, gravity: Gravity) {
+        sprites.setDataNumber(sprite, "gravity", gravity);
+    }
 
-    //% block="set $pattern of $sprite=variables_get(aEnemy)"
+    game.onUpdate(function () {
+        for (let target of sprites.allOfKind(SpriteKind.Enemy)) {
+            if (sprites.readDataNumber(target, "gravity") == Gravity.Bottom) {
+                target.vy = 200
+            }
+        }
+    })
+
+    //% block="set $pattern pattern of $sprite=variables_get(aEnemy)"
     export function setPattern(sprite: Sprite, pattern: Pattern) {
 
         sprites.setDataNumber(sprite, "pattern", pattern);
