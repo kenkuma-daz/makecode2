@@ -4,7 +4,8 @@ enum ItemKind {
     Ladder,
     Gun,
     Sword,
-    JumpBoots
+    JumpBoots,
+    Door
 }
 namespace SpriteKind {
     export const Items = SpriteKind.create()
@@ -39,31 +40,31 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`brick`, function (sprite, loc
     itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.up.isPressed()) {
-        itemBox.action()
-    } else if (controller.down.isPressed()) {
-        itemBox.action()
-    } else if (冒険者の向き == "左") {
+    if (冒険者の向き == "左") {
         if (冒険者.tileKindAt(TileDirection.Left, assets.tile`closed_door`)) {
             creator.putTile(冒険者, creator.Direction.CenterLeft, myTiles.tile11)
         } else if (冒険者.tileKindAt(TileDirection.Left, assets.tile`opend_door`)) {
             creator.putTileWithWall(冒険者, creator.Direction.CenterLeft, myTiles.tile10)
-        } else {
-            itemBox.action()
         }
     } else if (冒険者の向き == "右") {
         if (冒険者.tileKindAt(TileDirection.Right, assets.tile`closed_door`)) {
             creator.putTile(冒険者, creator.Direction.CenterRight, myTiles.tile11)
         } else if (冒険者.tileKindAt(TileDirection.Right, assets.tile`opend_door`)) {
             creator.putTileWithWall(冒険者, creator.Direction.CenterRight, myTiles.tile10)
-        } else {
-            itemBox.action()
         }
     }
+    itemBox.action()
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`jump_boots`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.JumpBoots, assets.tile`jump_boots`)
+})
+itembox.util.onEvent(ItemKind.Door, function () {
+    if (冒険者の向き == "左") {
+        creator.putTile(冒険者, creator.Direction.CenterLeft, myTiles.tile11)
+    } else if (冒険者の向き == "右") {
+        creator.putTile(冒険者, creator.Direction.CenterRight, myTiles.tile11)
+    }
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
@@ -135,6 +136,10 @@ function 蛇生成 () {
     蛇.vy += 200
     蛇.vx = -20
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Door, assets.tile`opend_door`)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
