@@ -78,15 +78,6 @@ itembox.util.onEvent(ItemKind.Sword, function () {
         sword.wield(weapons.sword.Direction.Right)
     }
 })
-scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
-    if (sprites.readDataString(sprite, "タイプ") == "蛇") {
-        if (sprite.isHittingTile(CollisionDirection.Left)) {
-            sprite.vx = 20
-        } else if (sprite.isHittingTile(CollisionDirection.Right)) {
-            sprite.vx = -20
-        }
-    }
-})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`hand_gun`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Gun, assets.tile`hand_gun`)
@@ -130,8 +121,8 @@ function 蛇生成 () {
     蛇 = sprites.create(assets.image`snake_left`, SpriteKind.Enemy)
     sprites.setDataString(蛇, "タイプ", "蛇")
     蛇.setPosition(randint(0, 1600), randint(0, 10))
+    behavior.setPattern(蛇, behavior.Pattern.TurnWhenHitWall)
     蛇.vy += 200
-    蛇.vx = -20
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
@@ -533,7 +524,7 @@ for (let index = 0; index < 10; index++) {
     . . . c c c c c c c c b b . . . 
     `, SpriteKind.Enemy)
 tiles.placeOnTile(モンスター, tiles.getTileLocation(2, 8))
-behavior.putTileWithWall(モンスター, behavior.Pattern.TurnWhenHitWall)
+behavior.setPattern(モンスター, behavior.Pattern.TurnWhenHitWall)
 game.onUpdate(function () {
     for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
         if (sprites.readDataString(value, "タイプ") == "蛇") {

@@ -13,17 +13,19 @@ namespace behavior {
 
 
     //% block="set $pattern of $sprite=variables_get(aEnemy)"
-    export function putTileWithWall(sprite: Sprite, pattern: Pattern) {
+    export function setPattern(sprite: Sprite, pattern: Pattern) {
 
         sprites.setDataNumber(sprite, "pattern", pattern);
         sprite.vx = 20;
 
-        scene.onHitWall(SpriteKind.Enemy, (enemy, location) => {
-            if (sprites.readDataNumber(enemy, "pattern") == Pattern.TurnWhenHitWall) {
-                if (enemy.isHittingTile(CollisionDirection.Left)) {
-                    enemy.vx = 20
-                } else if (sprite.isHittingTile(CollisionDirection.Right)) {
-                    enemy.vx = -20
+        let kind = sprite.kind();
+
+        scene.onHitWall(kind, (target, location) => {
+            if (sprites.readDataNumber(target, "pattern") == Pattern.TurnWhenHitWall) {
+                if (target.isHittingTile(CollisionDirection.Left)) {
+                    target.vx = 20
+                } else if (target.isHittingTile(CollisionDirection.Right)) {
+                    target.vx = -20
                 }
             }
         });
