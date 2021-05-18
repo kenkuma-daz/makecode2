@@ -142,11 +142,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, lo
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
-scene.onOverlapTile(SpriteKind.Enemy, assets.tile`transparency16`, function (sprite, location) {
-    if (sprites.readDataString(sprite, "タイプ") == "蛇") {
-        sprite.vy = 200
-    }
-})
 itembox.util.onBlur(ItemKind.JumpBoots, function () {
     jumper.setSpeed(200)
 })
@@ -516,4 +511,11 @@ for (let index = 0; index < 10; index++) {
 }
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
+})
+game.onUpdate(function () {
+    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
+        if (sprites.readDataString(value, "タイプ") == "蛇") {
+            value.vy = 200
+        }
+    }
 })
