@@ -34,17 +34,17 @@ namespace behavior {
         _target: Sprite;
         constructor(sprite: Sprite) {
             this._target = sprite;
-            this._target.vx = 40;
+            this._target.vx = 30;
             this._target.vy = 200;
         }
         update() : void {
             let vy = this._target.vy;
-            this._target.vy = Math.min(vy+8, 200);
+            this._target.vy = Math.min(vy+10, 200);
 
             if (this._target.isHittingTile(CollisionDirection.Left)) {
-                this._target.vx = 40;
+                this._target.vx = 30;
             } else if (this._target.isHittingTile(CollisionDirection.Right)) {
-                this._target.vx = -40;
+                this._target.vx = -30;
             }
         }
     }
@@ -58,10 +58,10 @@ namespace behavior {
         }
         update() : void {
             let vy = this._target.vy;
-            this._target.vy = Math.min(vy+8, 200);
+            this._target.vy = Math.min(vy+6, 200);
 
             if (this._target.isHittingTile(CollisionDirection.Bottom)) {
-                this._target.vy = -100;
+                this._target.vy = -120;
             }
 
             if (this._target.isHittingTile(CollisionDirection.Left)) {
