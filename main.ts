@@ -74,13 +74,6 @@ function モンスター生成 () {
     tiles.placeOnTile(モンスター, tiles.getTileLocation(2, 8))
     behavior.setPattern(モンスター, behavior.Pattern.FlyAndTurnOnSideWall)
 }
-itembox.util.onEvent(ItemKind.Door, function () {
-    if (冒険者の向き == "左") {
-        creator.putTile(冒険者, creator.Direction.CenterLeft, myTiles.tile11)
-    } else if (冒険者の向き == "右") {
-        creator.putTile(冒険者, creator.Direction.CenterRight, myTiles.tile11)
-    }
-})
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.prev()
@@ -92,6 +85,9 @@ itembox.util.onEvent(ItemKind.Sword, function () {
     } else if (冒険者の向き == "右") {
         sword.wield(weapons.sword.Direction.Right)
     }
+})
+itembox.util.onFocus(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`hand_gun`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
@@ -167,12 +163,13 @@ function コウモリ生成 () {
         `, SpriteKind.Enemy)
     モンスター.setPosition(randint(0, 1600), randint(0, 10))
     モンスター.follow(冒険者, 20)
+    モンスター.setFlag(SpriteFlag.AutoDestroy, true)
 }
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
-itembox.util.onFocus(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(400)
+itembox.util.onBlur(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(200)
 })
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
@@ -361,9 +358,6 @@ function キャラクタアニメーション (sprite: Sprite) {
         冒険者の向き = "右"
     }
 }
-itembox.util.onBlur(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(200)
-})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
     if (sprites.readDataString(otherSprite, "タイプ") == "蛇") {
