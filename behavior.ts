@@ -1,90 +1,125 @@
 //% color="#40B080"
 namespace behavior {
 
-    export enum Gravity {
-        Zero,
-        Bottom
-    }
 
     export enum Pattern {
-        TurnWhenHitWall,
-        Jump
+        Bounce,
+        TurnOnSideWall,
+        BounceAndTurnOnSideWall,
+        FlyAndTurnOnSideWall,
     }
 
-    //% block="set $gravity gravity of $sprite=variables_get(aEnemy)"
-    export function setGravity(sprite: Sprite, gravity: Gravity) {
-        sprites.setDataNumber(sprite, "gravity", gravity);
-        if( gravity == Gravity.Bottom ) {
-            sprites.setDataNumber(sprite, "vy", 200);
+    interface Behavior {
+        update() : void
+    }
+
+
+    class BounceBehavior implements Behavior {
+        _target: Sprite;
+        constructor(sprite: Sprite) {
+            this._target = sprite;
+            this._target.vy = 200;
+        }
+        update() : void {
+            let vy = this._target.vy;
+            this._target.vy = Math.min(vy+8, 200);
+
+            if (this._target.isHittingTile(CollisionDirection.Bottom)) {
+                this._target.vy = -200;
+            }
         }
     }
 
+    class TurnOnSideWallBehavior implements Behavior {
+        _target: Sprite;
+        constructor(sprite: Sprite) {
+            this._target = sprite;
+            this._target.vx = 40;
+            this._target.vy = 200;
+        }
+        update() : void {
+            let vy = this._target.vy;
+            this._target.vy = Math.min(vy+8, 200);
+
+            if (this._target.isHittingTile(CollisionDirection.Left)) {
+                this._target.vx = 40;
+            } else if (this._target.isHittingTile(CollisionDirection.Right)) {
+                this._target.vx = -40;
+            }
+        }
+    }
+
+    class BounceAndTurnOnSideWallBehavior implements Behavior {
+        _target: Sprite;
+        constructor(sprite: Sprite) {
+            this._target = sprite;
+            this._target.vx = 50;
+            this._target.vy = 200;
+        }
+        update() : void {
+            let vy = this._target.vy;
+            this._target.vy = Math.min(vy+8, 200);
+
+            if (this._target.isHittingTile(CollisionDirection.Bottom)) {
+                this._target.vy = -100;
+            }
+
+            if (this._target.isHittingTile(CollisionDirection.Left)) {
+                this._target.vx = 50;
+            } else if (this._target.isHittingTile(CollisionDirection.Right)) {
+                this._target.vx = -50;
+            }
+        }
+    }
+
+    class FlyAndTurnOnSideWallBehavior implements Behavior {
+        _target: Sprite;
+        constructor(sprite: Sprite) {
+            this._target = sprite;
+            this._target.vx = 40;
+        }
+        update() : void {
+            if (this._target.isHittingTile(CollisionDirection.Left)) {
+                this._target.vx = 40;
+            } else if (this._target.isHittingTile(CollisionDirection.Right)) {
+                this._target.vx = -40;
+            }
+        }
+    }
+
+
+    // let _items: {sprite:Sprite, behavior:Behavior}[] = [];
+    let _items: Behavior[] = [];
     game.onUpdate(function () {
-        for (let target of sprites.allOfKind(SpriteKind.Enemy)) {
-            if (sprites.readDataNumber(target, "gravity") == Gravity.Bottom) {
-                let vy = sprites.readDataNumber(target, "vy");
-                vy = Math.min(vy+8, 200);
-                sprites.setDataNumber(target, "vy", vy);
-                target.vy = vy;
-            }
-
-            if (sprites.readDataNumber(target, "pattern") == Pattern.Jump) {
-                if (target.isHittingTile(CollisionDirection.Bottom)) {
-                    target.vx = -200;
-                    sprites.setDataNumber(target, "vy", -200);
-                }
-            }
-        }
+        _items.forEach(function(_behavior: Behavior, index: number) {
+            _behavior.update();
+        })
     })
 
     //% block="set $pattern pattern of $sprite=variables_get(aEnemy)"
     export function setPattern(sprite: Sprite, pattern: Pattern) {
 
-        sprites.setDataNumber(sprite, "pattern", pattern);
-        sprite.vx = 20;
+        let _behavior: Behavior = null;
+        switch(pattern) {
+        case Pattern.Bounce:
+            _behavior = new BounceBehavior(sprite);
+            break;
+        case Pattern.TurnOnSideWall:
+            _behavior = new TurnOnSideWallBehavior(sprite);
+            break;
+        case Pattern.BounceAndTurnOnSideWall:
+            _behavior = new BounceAndTurnOnSideWallBehavior(sprite);
+            break;
+        case Pattern.FlyAndTurnOnSideWall:
+            _behavior = new FlyAndTurnOnSideWallBehavior(sprite);
+            break;
+        }
+        if( !_behavior )
+            return;
 
-        let kind = sprite.kind();
 
-        scene.onHitWall(kind, (target, location) => {
-            let pattern = sprites.readDataNumber(target, "pattern");
-            switch(pattern) {
-            case Pattern.TurnWhenHitWall:
-                if (target.isHittingTile(CollisionDirection.Left))
-                    target.vx = 20
-                else if (target.isHittingTile(CollisionDirection.Right))
-                    target.vx = -20
-                break;
-            }
-        });
+        _items.push(_behavior);
     }
 
-
-
-    // export class Jumpable {
-
-    //     _target: Sprite;
-    //     _grabbableTiles: Image[];
-    //     _speed: number;
-
-    //     constructor(target: Sprite) {
-    //         this._target = target;
-    //         this._grabbableTiles = [];
-    //         this._speed = 200;
-    //     }
-
-
-    //     _run() {
-    //         game.onUpdate(() => {
-    //         });
-    //     }
-    // }
-
-    // //% block="$target to be jumpable"
-    // //% blockSetVariable=jumper
-    // export function setToBeJumpable(target: Sprite): jumpable.Jumpable {
-    //     let instance = new jumpable.Jumpable(target);
-    //     instance._run();
-    //     return instance;
-    // }    
 }
 

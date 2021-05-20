@@ -17,6 +17,12 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`brick`, function (sprite, loc
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
 })
+function 猿生成 () {
+    猿 = sprites.create(assets.image`monkey_left`, SpriteKind.Enemy)
+    猿.setPosition(randint(0, 1600), randint(0, 10))
+    sprites.setDataString(猿, "タイプ", "猿")
+    behavior.setPattern(猿, behavior.Pattern.BounceAndTurnOnSideWall)
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (冒険者の向き == "左") {
         if (冒険者.tileKindAt(TileDirection.Left, assets.tile`closed_door`)) {
@@ -44,6 +50,9 @@ function モンスター生成 () {
     for (let index = 0; index < 10; index++) {
         蛇生成()
     }
+    for (let index = 0; index < 10; index++) {
+        猿生成()
+    }
     モンスター = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -63,8 +72,7 @@ function モンスター生成 () {
         . . . c c c c c c c c b b . . . 
         `, SpriteKind.Enemy)
     tiles.placeOnTile(モンスター, tiles.getTileLocation(2, 8))
-    behavior.setGravity(モンスター, behavior.Gravity.Bottom)
-    behavior.setPattern(モンスター, behavior.Pattern.Jump)
+    behavior.setPattern(モンスター, behavior.Pattern.FlyAndTurnOnSideWall)
 }
 itembox.util.onEvent(ItemKind.Door, function () {
     if (冒険者の向き == "左") {
@@ -126,10 +134,9 @@ itembox.util.onEvent(ItemKind.Gun, function () {
 })
 function 蛇生成 () {
     蛇 = sprites.create(assets.image`snake_left`, SpriteKind.Enemy)
-    sprites.setDataString(蛇, "タイプ", "蛇")
     蛇.setPosition(randint(0, 1600), randint(0, 10))
-    behavior.setPattern(蛇, behavior.Pattern.TurnWhenHitWall)
-    behavior.setGravity(蛇, behavior.Gravity.Bottom)
+    sprites.setDataString(蛇, "タイプ", "蛇")
+    behavior.setPattern(蛇, behavior.Pattern.TurnOnSideWall)
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
@@ -373,6 +380,7 @@ let 蛇: Sprite = null
 let 弾丸: Sprite = null
 let モンスター: Sprite = null
 let 冒険者の向き = ""
+let 猿: Sprite = null
 let itemBox: itembox.items.ItemBox = null
 let jumper: jumpable.Jumpable = null
 let sword: weapons.sword.Sword = null
