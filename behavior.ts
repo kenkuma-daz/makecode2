@@ -5,7 +5,7 @@ namespace behavior {
         update() : void
     }
 
-    export enum Pattern {
+    export enum MovePattern {
         Bounce,
         TurnOnSideWall,
         BounceAndTurnOnSideWall,
@@ -87,15 +87,15 @@ namespace behavior {
             }
         }
 
-        export function createBehavior(sprite: Sprite, pattern: Pattern) : Behavior {
+        export function createBehavior(sprite: Sprite, pattern: MovePattern) : Behavior {
             switch(pattern) {
-            case Pattern.Bounce:
+            case MovePattern.Bounce:
                 return new BounceBehavior(sprite);
-            case Pattern.TurnOnSideWall:
+            case MovePattern.TurnOnSideWall:
                 return new TurnOnSideWallBehavior(sprite);
-            case Pattern.BounceAndTurnOnSideWall:
+            case MovePattern.BounceAndTurnOnSideWall:
                 return new BounceAndTurnOnSideWallBehavior(sprite);
-            case Pattern.FlyAndTurnOnSideWall:
+            case MovePattern.FlyAndTurnOnSideWall:
                 return new FlyAndTurnOnSideWallBehavior(sprite);
             default:
                 return null;
@@ -112,7 +112,7 @@ namespace behavior {
     })
 
     //% block="set $pattern pattern of $sprite=variables_get(aEnemy)"
-    export function setPattern(sprite: Sprite, pattern: Pattern) {
+    export function setPattern(sprite: Sprite, pattern: MovePattern) {
         sprite.onDestroyed(() => {
             let found = _items.find((item: {sprite:Sprite, behavior:Behavior}, index: number) => {
                 return item.sprite == sprite;
