@@ -97,9 +97,6 @@ itembox.util.onEvent(ItemKind.Sword, function () {
         sword.wield(weapons.sword.Direction.Right)
     }
 })
-itembox.util.onFocus(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(400)
-})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`hand_gun`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Gun, assets.tile`hand_gun`)
@@ -146,7 +143,7 @@ function 蛇生成 () {
     behavior.setPattern(蛇, behavior.MovePattern.TurnOnSideWall)
 }
 itembox.util.onFocus(ItemKind.Sword, function () {
-    sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`,1)
+    sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`, 1)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
@@ -181,8 +178,8 @@ function コウモリ生成 () {
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
-itembox.util.onBlur(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(200)
+itembox.util.onFocus(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
 })
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
@@ -375,6 +372,9 @@ function キャラクタアニメーション (sprite: Sprite) {
         冒険者の向き = "右"
     }
 }
+itembox.util.onBlur(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(200)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
     if (sprites.readDataString(otherSprite, "タイプ") == "蛇") {

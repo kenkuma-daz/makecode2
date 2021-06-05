@@ -47,9 +47,6 @@ namespace weapons.sword {
 
 
         _isWallAt(col:number, row:number) : boolean {
-            // let loc : tiles.Location = tiles.getTileLocation(x >> 4, y >> 4);
-            // const tm = game.currentScene().tileMap;
-            // return tm ? tm.isObstacle(loc.col, loc.row) : false;
             const tm = game.currentScene().tileMap;
             return tm ? tm.isObstacle(col, row) : false;
         }
@@ -80,7 +77,6 @@ namespace weapons.sword {
             switch(direction) {
             case Direction.Left:
                 animation.runImageAnimation(this._sword, this._leftAnim, interval, false);
-                // time = this._spanForHitWall(-1, this._leftSpan) * interval * (1 / this._span);
                 time = time * this._spanForHitWall(-1, this._leftSpan) / this._span;
                 break;
             case Direction.Right:
@@ -94,8 +90,6 @@ namespace weapons.sword {
             });
         }
 
-        //% block="set animation left=$leftAnim=animation_editor right=$rightAnim=animation_editor to $this(sword)"
-        //% group="Sword"
         setAnimation(leftAnim: Image[], rightAnim: Image[]) {
             this._leftAnim = leftAnim;
             this._leftSpan = leftAnim[0].width >> 4;
@@ -111,9 +105,10 @@ namespace weapons.sword {
         }
     }
 
-    //% block="set $target to equip weapon left=$leftAnim=animation_editor right=$rightAnim=animation_editor span $span"
+    //% block="set $target to equip weapon|left=$leftAnim=animation_editor|right=$rightAnim=animation_editor|span|$span"
     //% blockSetVariable=sword
     //% group="Sword"
+    //% inlineInputMode=inline
     export function equipSword(target: Sprite, leftAnim: Image[], rightAnim: Image[], span: number): weapons.sword.Sword {
         let sword = new weapons.sword.Sword(target, span);
         sword.setAnimation(leftAnim, rightAnim);
