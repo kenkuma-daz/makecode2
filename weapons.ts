@@ -34,11 +34,34 @@ namespace weapons.sword {
         _sword: Sprite;
         _wielding: boolean;
         _leftAnim: Image[];
+        _leftSpan: number;
         _rightAnim: Image[];
+        _rightSpan: number;
 
         constructor(target: Sprite) {
             this._target = target;
             this._sword = null;
+        }
+
+
+        _isWallAt(col:number, row:number) : boolean {
+            // let loc : tiles.Location = tiles.getTileLocation(x >> 4, y >> 4);
+            // const tm = game.currentScene().tileMap;
+            // return tm ? tm.isObstacle(loc.col, loc.row) : false;
+            const tm = game.currentScene().tileMap;
+            return tm ? tm.isObstacle(col, row) : false;
+        }
+
+        _spanForHitWall(signOfDirection: number, maxSpan: number) : number {
+            let length;
+            // control.assert(false, 0);
+            let col = this._target.x >> 4; 
+            let row = this._target.y >> 4; 
+            for(let span=0; span<maxSpan; span++) {
+                if( this._isWallAt(col + span * signOfDirection, row))
+                    return span;
+            }
+            return maxSpan;
         }
 
         //% block="wield $this(sword) for $direction"
@@ -50,15 +73,27 @@ namespace weapons.sword {
             this._sword = _createEmptySprite_16x16();
             this._sword.setPosition(this._target.x, this._target.y);
 
+            // let col = this._target.x >> 4; 
+            // let row = this._target.y >> 4; 
+            // let n=0;
+            // for(; n<this._rightLength; n++) {
+            //     if( this._isWallAt(col + n, row))
+            //         break;
+            // }
+            // console.log("ken n:" + n);
+            let interval = 90;
+            let span : number = 0;
             switch(direction) {
             case Direction.Left:
-                animation.runImageAnimation(this._sword, this._leftAnim, 100, false);
+                animation.runImageAnimation(this._sword, this._leftAnim, interval, false);
+                span = this._spanForHitWall(-1, this._leftSpan);
                 break;
             case Direction.Right:
-                animation.runImageAnimation(this._sword, this._rightAnim, 100, false);
+                animation.runImageAnimation(this._sword, this._rightAnim, interval, false);
+                span = this._spanForHitWall(1, this._rightSpan);
                 break;
             }
-            timer.after(300, function () {
+            timer.after(span*interval, function () {
                 this._sword.destroy();
                 this._sword = null;
             });
@@ -68,7 +103,9 @@ namespace weapons.sword {
         //% group="Sword"
         setAnimation(leftAnim: Image[], rightAnim: Image[]) {
             this._leftAnim = leftAnim;
+            this._leftSpan = leftAnim[0].width >> 4;
             this._rightAnim = rightAnim;
+            this._rightSpan = rightAnim[0].width >> 4;
         }
 
         _run() {

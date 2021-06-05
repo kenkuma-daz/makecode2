@@ -86,6 +86,9 @@ itembox.util.onEvent(ItemKind.Sword, function () {
         sword.wield(weapons.sword.Direction.Right)
     }
 })
+itembox.util.onFocus(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`hand_gun`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Gun, assets.tile`hand_gun`)
@@ -164,8 +167,8 @@ function コウモリ生成 () {
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
-itembox.util.onFocus(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(400)
+itembox.util.onBlur(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(200)
 })
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
@@ -354,9 +357,6 @@ function キャラクタアニメーション (sprite: Sprite) {
         冒険者の向き = "右"
     }
 }
-itembox.util.onBlur(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(200)
-})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
     if (sprites.readDataString(otherSprite, "タイプ") == "蛇") {
@@ -520,7 +520,7 @@ scene.setBackgroundImage(img`
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
 controller.moveSprite(冒険者, 100, 0)
-sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
+sword = weapons.sword.equipSword(冒険者, assets.animation`whip_left_anim`, assets.animation`whip_right_anim`)
 jumper = jumpable.setToBeJumpable(冒険者)
 jumper.canGrabTile(assets.tile`ハシゴタイル`)
 jumper.canGrabTile(assets.tile`tree1`)
