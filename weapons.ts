@@ -32,14 +32,16 @@ namespace weapons.sword {
 
         _target: Sprite;
         _sword: Sprite;
+        _span: number;
         _wielding: boolean;
         _leftAnim: Image[];
         _leftSpan: number;
         _rightAnim: Image[];
         _rightSpan: number;
 
-        constructor(target: Sprite) {
+        constructor(target: Sprite, span: number) {
             this._target = target;
+            this._span = span;
             this._sword = null;
         }
 
@@ -73,27 +75,20 @@ namespace weapons.sword {
             this._sword = _createEmptySprite_16x16();
             this._sword.setPosition(this._target.x, this._target.y);
 
-            // let col = this._target.x >> 4; 
-            // let row = this._target.y >> 4; 
-            // let n=0;
-            // for(; n<this._rightLength; n++) {
-            //     if( this._isWallAt(col + n, row))
-            //         break;
-            // }
-            // console.log("ken n:" + n);
-            let interval = 90;
-            let span : number = 0;
+            let interval = 80;  // fix
+            let time : number = 200;
             switch(direction) {
             case Direction.Left:
                 animation.runImageAnimation(this._sword, this._leftAnim, interval, false);
-                span = this._spanForHitWall(-1, this._leftSpan);
+                // time = this._spanForHitWall(-1, this._leftSpan) * interval * (1 / this._span);
+                time = time * this._spanForHitWall(-1, this._leftSpan) / this._span;
                 break;
             case Direction.Right:
                 animation.runImageAnimation(this._sword, this._rightAnim, interval, false);
-                span = this._spanForHitWall(1, this._rightSpan);
+                time = time * this._spanForHitWall(1, this._rightSpan) / this._span;
                 break;
             }
-            timer.after(span*interval, function () {
+            timer.after(time, function () {
                 this._sword.destroy();
                 this._sword = null;
             });
@@ -116,11 +111,11 @@ namespace weapons.sword {
         }
     }
 
-    //% block="$target to equip sword and set animation left=$leftAnim=animation_editor right=$rightAnim=animation_editor"
+    //% block="set $target to equip weapon left=$leftAnim=animation_editor right=$rightAnim=animation_editor span $span"
     //% blockSetVariable=sword
     //% group="Sword"
-    export function equipSword(target: Sprite, leftAnim: Image[], rightAnim: Image[]): weapons.sword.Sword {
-        let sword = new weapons.sword.Sword(target);
+    export function equipSword(target: Sprite, leftAnim: Image[], rightAnim: Image[], span: number): weapons.sword.Sword {
+        let sword = new weapons.sword.Sword(target, span);
         sword.setAnimation(leftAnim, rightAnim);
         sword._run();
         return sword;
