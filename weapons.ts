@@ -32,13 +32,35 @@ namespace weapons.sword {
 
         _target: Sprite;
         _sword: Sprite;
+        _span: number;
         _wielding: boolean;
         _leftAnim: Image[];
+        _leftSpan: number;
         _rightAnim: Image[];
+        _rightSpan: number;
 
-        constructor(target: Sprite) {
+        constructor(target: Sprite, span: number) {
             this._target = target;
+            this._span = span;
             this._sword = null;
+        }
+
+
+        _isWallAt(col:number, row:number) : boolean {
+            const tm = game.currentScene().tileMap;
+            return tm ? tm.isObstacle(col, row) : false;
+        }
+
+        _spanForHitWall(signOfDirection: number, maxSpan: number) : number {
+            let length;
+            // control.assert(false, 0);
+            let col = this._target.x >> 4; 
+            let row = this._target.y >> 4; 
+            for(let span=0; span<maxSpan; span++) {
+                if( this._isWallAt(col + span * signOfDirection, row))
+                    return span;
+            }
+            return maxSpan;
         }
 
         //% block="wield $this(sword) for $direction"
@@ -50,25 +72,29 @@ namespace weapons.sword {
             this._sword = _createEmptySprite_16x16();
             this._sword.setPosition(this._target.x, this._target.y);
 
+            let interval = 80;  // fix
+            let time : number = 200;
             switch(direction) {
             case Direction.Left:
-                animation.runImageAnimation(this._sword, this._leftAnim, 100, false);
+                animation.runImageAnimation(this._sword, this._leftAnim, interval, false);
+                time = time * this._spanForHitWall(-1, this._leftSpan) / this._span;
                 break;
             case Direction.Right:
-                animation.runImageAnimation(this._sword, this._rightAnim, 100, false);
+                animation.runImageAnimation(this._sword, this._rightAnim, interval, false);
+                time = time * this._spanForHitWall(1, this._rightSpan) / this._span;
                 break;
             }
-            timer.after(300, function () {
+            timer.after(time, function () {
                 this._sword.destroy();
                 this._sword = null;
             });
         }
 
-        //% block="set animation left=$leftAnim=animation_editor right=$rightAnim=animation_editor to $this(sword)"
-        //% group="Sword"
         setAnimation(leftAnim: Image[], rightAnim: Image[]) {
             this._leftAnim = leftAnim;
+            this._leftSpan = leftAnim[0].width >> 4;
             this._rightAnim = rightAnim;
+            this._rightSpan = rightAnim[0].width >> 4;
         }
 
         _run() {
@@ -79,11 +105,12 @@ namespace weapons.sword {
         }
     }
 
-    //% block="$target to equip sword and set animation left=$leftAnim=animation_editor right=$rightAnim=animation_editor"
+    //% block="set $target to equip weapon|left=$leftAnim=animation_editor|right=$rightAnim=animation_editor|span|$span"
     //% blockSetVariable=sword
     //% group="Sword"
-    export function equipSword(target: Sprite, leftAnim: Image[], rightAnim: Image[]): weapons.sword.Sword {
-        let sword = new weapons.sword.Sword(target);
+    //% inlineInputMode=inline
+    export function equipSword(target: Sprite, leftAnim: Image[], rightAnim: Image[], span: number): weapons.sword.Sword {
+        let sword = new weapons.sword.Sword(target, span);
         sword.setAnimation(leftAnim, rightAnim);
         sword._run();
         return sword;

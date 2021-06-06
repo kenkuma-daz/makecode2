@@ -5,33 +5,19 @@ enum ItemKind {
     Gun,
     Sword,
     JumpBoots,
-    Door
+    Door,
+    Whip
 }
 namespace SpriteKind {
     export const Items = SpriteKind.create()
 }
-function モンスター作成 () {
-    モンスター = sprites.create(img`
-        . . f f f . . . . . . . . f f f 
-        . f f c c . . . . . . f c b b c 
-        f f c c . . . . . . f c b b c . 
-        f c f c . . . . . . f b c c c . 
-        f f f c c . c c . f c b b c c . 
-        f f c 3 c c 3 c c f b c b b c . 
-        f f b 3 b c 3 b c f b c c b c . 
-        . c b b b b b b c b b c c c . . 
-        . c 1 b b b 1 b b c c c c . . . 
-        c b b b b b b b b b c c . . . . 
-        c b c b b b c b b b b f . . . . 
-        f b 1 f f f 1 b b b b f c . . . 
-        f b b b b b b b b b b f c c . . 
-        . f b b b b b b b b c f . . . . 
-        . . f b b b b b b c f . . . . . 
-        . . . f f f f f f f . . . . . . 
-        `, SpriteKind.Enemy)
-    モンスター.setPosition(randint(0, 1600), randint(0, 10))
-    モンスター.follow(冒険者, 20)
-}
+itembox.util.onEvent(ItemKind.Whip, function () {
+    if (冒険者の向き == "左") {
+        sword.wield(weapons.sword.Direction.Left)
+    } else if (冒険者の向き == "右") {
+        sword.wield(weapons.sword.Direction.Right)
+    }
+})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(冒険者, 0, 0)
 })
@@ -39,6 +25,12 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`brick`, function (sprite, loc
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Wall, assets.tile`壁タイル`)
 })
+function 猿生成 () {
+    猿 = sprites.create(assets.image`monkey_left`, SpriteKind.Enemy)
+    猿.setPosition(randint(0, 1600), randint(0, 10))
+    sprites.setDataString(猿, "タイプ", "猿")
+    behavior.setPattern(猿, behavior.MovePattern.BounceAndTurnOnSideWall)
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (冒険者の向き == "左") {
         if (冒険者.tileKindAt(TileDirection.Left, assets.tile`closed_door`)) {
@@ -59,13 +51,40 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`jump_boots`, function (sprite
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.JumpBoots, assets.tile`jump_boots`)
 })
-itembox.util.onEvent(ItemKind.Door, function () {
-    if (冒険者の向き == "左") {
-        creator.putTile(冒険者, creator.Direction.CenterLeft, myTiles.tile11)
-    } else if (冒険者の向き == "右") {
-        creator.putTile(冒険者, creator.Direction.CenterRight, myTiles.tile11)
-    }
+itembox.util.onFocus(ItemKind.Whip, function () {
+    sword = weapons.sword.equipSword(冒険者, assets.animation`whip_left_anim`, assets.animation`whip_right_anim`, 4)
 })
+function モンスター生成 () {
+    for (let index = 0; index < 3; index++) {
+        コウモリ生成()
+    }
+    for (let index = 0; index < 10; index++) {
+        蛇生成()
+    }
+    for (let index = 0; index < 10; index++) {
+        猿生成()
+    }
+    モンスター = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . b 5 5 b . . . 
+        . . . . . . b b b b b b . . . . 
+        . . . . . b b 5 5 5 5 5 b . . . 
+        . b b b b b 5 5 5 5 5 5 5 b . . 
+        . b d 5 b 5 5 5 5 5 5 5 5 b . . 
+        . . b 5 5 b 5 d 1 f 5 d 4 f . . 
+        . . b d 5 5 b 1 f f 5 4 4 c . . 
+        b b d b 5 5 5 d f b 4 4 4 4 b . 
+        b d d c d 5 5 b 5 4 4 4 4 4 4 b 
+        c d d d c c b 5 5 5 5 5 5 5 b . 
+        c b d d d d d 5 5 5 5 5 5 5 b . 
+        . c d d d d d d 5 5 5 5 5 d b . 
+        . . c b d d d d d 5 5 5 b b . . 
+        . . . c c c c c c c c b b . . . 
+        `, SpriteKind.Enemy)
+    tiles.placeOnTile(モンスター, tiles.getTileLocation(2, 8))
+    behavior.setPattern(モンスター, behavior.MovePattern.FlyAndTurnOnSideWall)
+}
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed()) {
         itemBox.prev()
@@ -76,18 +95,6 @@ itembox.util.onEvent(ItemKind.Sword, function () {
         sword.wield(weapons.sword.Direction.Left)
     } else if (冒険者の向き == "右") {
         sword.wield(weapons.sword.Direction.Right)
-    }
-})
-itembox.util.onFocus(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(400)
-})
-scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
-    if (sprites.readDataString(sprite, "タイプ") == "蛇") {
-        if (sprite.isHittingTile(CollisionDirection.Left)) {
-            sprite.vx = 20
-        } else if (sprite.isHittingTile(CollisionDirection.Right)) {
-            sprite.vx = -20
-        }
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`hand_gun`, function (sprite, location) {
@@ -131,11 +138,13 @@ itembox.util.onEvent(ItemKind.Gun, function () {
 })
 function 蛇生成 () {
     蛇 = sprites.create(assets.image`snake_left`, SpriteKind.Enemy)
-    sprites.setDataString(蛇, "タイプ", "蛇")
     蛇.setPosition(randint(0, 1600), randint(0, 10))
-    蛇.vy += 200
-    蛇.vx = -20
+    sprites.setDataString(蛇, "タイプ", "蛇")
+    behavior.setPattern(蛇, behavior.MovePattern.TurnOnSideWall)
 }
+itembox.util.onFocus(ItemKind.Sword, function () {
+    sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`, 1)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Door, assets.tile`opend_door`)
@@ -144,11 +153,33 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`ladder`, function (sprite, lo
     tiles.setTileAt(location, assets.tile`transparency16`)
     itemBox.add(ItemKind.Ladder, assets.tile`ハシゴタイル`)
 })
+function コウモリ生成 () {
+    モンスター = sprites.create(img`
+        . . f f f . . . . . . . . f f f 
+        . f f c c . . . . . . f c b b c 
+        f f c c . . . . . . f c b b c . 
+        f c f c . . . . . . f b c c c . 
+        f f f c c . c c . f c b b c c . 
+        f f c 3 c c 3 c c f b c b b c . 
+        f f b 3 b c 3 b c f b c c b c . 
+        . c b b b b b b c b b c c c . . 
+        . c 1 b b b 1 b b c c c c . . . 
+        c b b b b b b b b b c c . . . . 
+        c b c b b b c b b b b f . . . . 
+        f b 1 f f f 1 b b b b f c . . . 
+        f b b b b b b b b b b f c c . . 
+        . f b b b b b b b b c f . . . . 
+        . . f b b b b b b c f . . . . . 
+        . . . f f f f f f f . . . . . . 
+        `, SpriteKind.Enemy)
+    モンスター.setPosition(randint(0, 1600), randint(0, 10))
+    モンスター.follow(冒険者, 20)
+}
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     controller.moveSprite(冒険者, 100, 0)
 })
-itembox.util.onBlur(ItemKind.JumpBoots, function () {
-    jumper.setSpeed(200)
+itembox.util.onFocus(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(400)
 })
 itembox.util.onEvent(ItemKind.Wall, function () {
     if (controller.up.isPressed()) {
@@ -160,6 +191,10 @@ itembox.util.onEvent(ItemKind.Wall, function () {
     } else if (冒険者の向き == "右") {
         creator.putTileWithWall(冒険者, creator.Direction.CenterRight, myTiles.tile1)
     }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`whip`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+    itemBox.add(ItemKind.Whip, assets.tile`whip`)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`short_sword`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`transparency16`)
@@ -337,12 +372,15 @@ function キャラクタアニメーション (sprite: Sprite) {
         冒険者の向き = "右"
     }
 }
+itembox.util.onBlur(ItemKind.JumpBoots, function () {
+    jumper.setSpeed(200)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 500)
     if (sprites.readDataString(otherSprite, "タイプ") == "蛇") {
         蛇生成()
     } else {
-        モンスター作成()
+        コウモリ生成()
     }
     info.changeScoreBy(1)
 })
@@ -351,11 +389,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let 蛇: Sprite = null
 let 弾丸: Sprite = null
-let 冒険者の向き = ""
 let モンスター: Sprite = null
+let 猿: Sprite = null
+let sword: weapons.sword.Sword = null
+let 冒険者の向き = ""
 let itemBox: itembox.items.ItemBox = null
 let jumper: jumpable.Jumpable = null
-let sword: weapons.sword.Sword = null
 let 冒険者: Sprite = null
 tiles.setTilemap(tilemap`level1`)
 scene.setBackgroundImage(img`
@@ -499,7 +538,6 @@ scene.setBackgroundImage(img`
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
 controller.moveSprite(冒険者, 100, 0)
-sword = weapons.sword.equipSword(冒険者, assets.animation`sword_left_anim`, assets.animation`sword_right_anim`)
 jumper = jumpable.setToBeJumpable(冒険者)
 jumper.canGrabTile(assets.tile`ハシゴタイル`)
 jumper.canGrabTile(assets.tile`tree1`)
@@ -508,19 +546,7 @@ itemBox.add(ItemKind.Hammer, assets.tile`hummer`)
 scene.cameraFollowSprite(冒険者)
 tiles.placeOnTile(冒険者, tiles.getTileLocation(7, 8))
 info.setLife(8)
-for (let index = 0; index < 3; index++) {
-    モンスター作成()
-}
-for (let index = 0; index < 10; index++) {
-    蛇生成()
-}
+モンスター生成()
 game.onUpdate(function () {
     キャラクタアニメーション(冒険者)
-})
-game.onUpdate(function () {
-    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
-        if (sprites.readDataString(value, "タイプ") == "蛇") {
-            value.vy = 200
-        }
-    }
 })
